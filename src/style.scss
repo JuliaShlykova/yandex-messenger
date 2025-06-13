@@ -1,0 +1,13 @@
+$primary-color: #212D3F;
+$secondary-color: #7AA6E9;
+$not-important-color: #555555;
+$error-color: #D31023;
+$selection-color: #CADBF6;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: $primary-color;
+}
