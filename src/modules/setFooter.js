@@ -17,4 +17,4 @@ const setFooter = () => {
   })
 }
 
-export default setFooter
+export default setFooter;
