@@ -7,6 +7,9 @@ export default defineConfig({
   },
   preview: {
     port: 3000,
+  },  
+  build: {
+    outDir: resolve(__dirname, 'dist'),
   },
   publicDir: './static',
   root: resolve(__dirname, 'src')
