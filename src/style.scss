@@ -1,13 +1,56 @@
-$primary-color: #212D3F;
-$secondary-color: #7AA6E9;
-$not-important-color: #555555;
-$error-color: #D31023;
-$selection-color: #CADBF6;
+@import url('https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+  --primary-color: #212D3F;
+  --secondary-color: #7AA6E9;
+  --not-important-color: #555555;
+  --error-color: #D31023;
+  --selection-color: #CADBF6;
+}
+
 
 * {
   box-sizing: border-box;
 }
 
 body {
-  background-color: $primary-color;
+  background-color: var(--primary-color);
+  font-size: 16px;
+  font-family: 'Roboto';
+  margin: 0;
+}
+
+h1 {
+  font-family: 'Handjet';
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+main {
+  height: 100vh;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.centering {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.white {
+  color: white;
 }
