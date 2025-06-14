@@ -1,0 +1,16 @@
+.chat-wrapper {
+  display: flex;
+}
+
+.chats-list {
+  background-color: white;
+  width: 360px;
+  height: 100%;
+}
+
+.chat-window {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
