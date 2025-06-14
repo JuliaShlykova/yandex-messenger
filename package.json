@@ -9,6 +9,9 @@
     "preview": "vite preview",
     "start": "vite build && vite preview"
   },
+  "engines" : { 
+    "node" : ">=22.16.0"
+  },
   "devDependencies": {
     "sass": "^1.89.2",
     "vite": "^6.3.5"
