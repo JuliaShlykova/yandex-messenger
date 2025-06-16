@@ -9,11 +9,12 @@
     "preview": "vite preview",
     "start": "vite build && vite preview"
   },
-  "engines" : { 
-    "node" : ">=22.16.0"
+  "engines": {
+    "node": ">=22.16.0"
   },
   "devDependencies": {
     "sass": "^1.89.2",
+    "typescript": "^5.8.3",
     "vite": "^6.3.5"
   },
   "dependencies": {
