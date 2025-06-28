@@ -1,8 +1,8 @@
 import './style.scss';
 import Handlebars from 'handlebars';
 import * as Pages from './pages';
-import setFooter from './modules/setFooter.js';
-import applyPage from './utils/applyPage.js';
+import setFooter from './modules/setFooter';
+import applyPage from './utils/applyPage';
 
 import Button from './components/button';
 import Input from './components/input';
@@ -24,9 +24,9 @@ const btnProfile = document.querySelector('#btn-profile');
 const btn404 = document.querySelector('#btn-404');
 const btn500 = document.querySelector('#btn-500');
 
-btnLogin.addEventListener('click', () => applyPage(Pages.Login));
-btnSignup.addEventListener('click', () => applyPage(Pages.Signup));
-btnChat.addEventListener('click', () => applyPage(Pages.Chat));
-btnProfile.addEventListener('click', () => applyPage(Pages.Profile));
-btn404.addEventListener('click', () => applyPage(Pages.NotFound));
-btn500.addEventListener('click', () => applyPage(Pages.ServerError));
+btnLogin?.addEventListener('click', () => applyPage(Pages.Login));
+btnSignup?.addEventListener('click', () => applyPage(Pages.Signup));
+btnChat?.addEventListener('click', () => applyPage(Pages.Chat));
+btnProfile?.addEventListener('click', () => applyPage(Pages.Profile));
+btn404?.addEventListener('click', () => applyPage(Pages.NotFound));
+btn500?.addEventListener('click', () => applyPage(Pages.ServerError));
