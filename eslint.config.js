@@ -17,7 +17,9 @@ export default defineConfig([
       parser: typescriptParser
     },
     rules: {
-      "object-curly-spacing": ["error", "always"]
+      "object-curly-spacing": ["error", "always"],
+      "arrow-parens": ["error", "as-needed"],
+      "comma-dangle": ["error", "never"]
     },
   }
 ]);

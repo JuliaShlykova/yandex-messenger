@@ -13,8 +13,8 @@ const setFooter = () => {
         { id: 'chat', name: 'Чат' },
         { id: 'profile', name: 'Профиль' },
         { id: '404', name: '404' },
-        { id: '500', name: '500' },
-      ],
+        { id: '500', name: '500' }
+      ]
     });
   }
 };
