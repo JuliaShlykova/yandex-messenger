@@ -19,7 +19,8 @@ export default defineConfig([
     rules: {
       "object-curly-spacing": ["error", "always"],
       "arrow-parens": ["error", "as-needed"],
-      "comma-dangle": ["error", "never"]
+      "comma-dangle": ["error", "never"],
+      'max-len': ["error", { "code": 100 }]
     },
   }
 ]);

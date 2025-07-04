@@ -1,18 +1,20 @@
 <main>
-{{#> CenteringWrapper}}
+<div class="centering-wrapper">
+  <div class="block">
   <h1>Регистрация в КосмоЧат</h1>
   <div class="form-wrapper">
     <form>
-      {{> Input type="text" name="first_name" label="Имя" id="first-name" required=true}}
-      {{> Input type="text" name="second_name" label="Фамилия" id="second-name" required=true}}
-      {{> Input type="text" name="login" label="Логин" id="login" required=true}}
-      {{> Input type="email" name="email" label="Почта" id="email" required=true}}
-      {{> Input type="tel" name="phone" label="телефон" id="phone" required=true}}
-      {{> Input type="password" name="password" label="Пароль" id="password" required=true}}
-      {{> Input type="password" label="Повторите пароль" id="confirm-password" required=true}}
-      {{> Button type="submit" text="зарегистрироваться"}}
+      {{{inputFirstName}}}
+      {{{inputLastName}}}
+      {{{inputLogin}}}
+      {{{inputEmail}}}
+      {{{inputPhone}}}
+      {{{inputPassword}}}
+      {{{inputConfirmPassword}}}
+      {{{button}}}
       <a href="/login">Уже есть аккаунт</a>
     </form>
   </div>
-{{/ CenteringWrapper}}
+  </div>
+</div>
 </main>

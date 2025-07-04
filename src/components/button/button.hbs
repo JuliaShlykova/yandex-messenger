@@ -1,6 +1,7 @@
 <button
-  class="btn-standard"
+  class="{{#if class}}{{class}}{{else}}btn-standard{{/if}}"
  {{#if disabled}} disabled {{/if}}
+ type="{{#if type}}{{type}}{{else}}button{{/if}}"
 >
   {{text}}
 </button>

@@ -1,3 +1,15 @@
 import './not-found.scss';
+import template from './not-found.hbs?raw';
+import Block from '../../modules/Block';
 
-export { default as NotFound } from './not-found.hbs?raw';
+class NotFoundPage extends Block {
+  constructor() {
+    super();
+  }
+
+  render() {
+    return template;
+  }
+}
+
+export { NotFoundPage as NotFound };

@@ -1,5 +1,15 @@
-export type PropValue = string|number|object;
-export type EventCallback = (...args: PropValue[]) => void;
+type PrimitiveType = string | number | boolean;
+
+export type ObjectType = Record<string, (PrimitiveType | ((e: Event) => void))>;
+
+export type PropType = Record<string, PrimitiveType | ObjectType | (() => void)>;
+
+export function isObject( propValue: PrimitiveType | ObjectType | (() => void)):
+ propValue is ObjectType {
+  return typeof propValue === 'object';
+}
+
+export type EventCallback = (...args: PropType[]) => void;
 
 export default class EventBus {
   private listeners: Record<string, EventCallback[]>;
@@ -29,7 +39,7 @@ export default class EventBus {
     );
   }
 
-  emit(event: string, ...args: PropValue[]): void {
+  emit(event: string, ...args: PropType[]): void {
     // console.log(event, args);
     if (!this.listeners[event]) {
       throw new Error(`No event: ${event}`);

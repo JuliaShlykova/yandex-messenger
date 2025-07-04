@@ -1,11 +1,17 @@
-import Handlebars from 'handlebars';
+import Block from '../modules/Block';
 
 const app = document.querySelector('#app');
 
-const applyPage = (page:string) => {
-  const template = Handlebars.compile(page);
+const applyPage = <T extends Block> (page:T) => {
   if (app) {
-    app.innerHTML = template({});
+    const child = app.firstChild;
+    if (child) {
+      child.replaceWith(page.getContent());
+    } else {
+      app.appendChild(page.getContent());
+    }
+
+    page.dispatchComponentDidMount();
   }
 };
 

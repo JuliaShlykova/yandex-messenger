@@ -1,3 +1,15 @@
 import './server-error.scss';
+import template from './server-error.hbs?raw';
+import Block from '../../modules/Block';
 
-export { default as ServerError } from './server-error.hbs?raw';
+class ServerErrorPage extends Block {
+  constructor() {
+    super();
+  }
+
+  render() {
+    return template;
+  }
+}
+
+export { ServerErrorPage as ServerError };
