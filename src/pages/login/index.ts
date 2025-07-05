@@ -2,7 +2,7 @@ import template from './login.hbs?raw';
 import Block from '../../modules/Block';
 import Button from '../../components/button';
 import Input from '../../components/input';
-import { ObjectType, PrimitiveType } from '../../modules/types';
+import submit from '../../utils/submit';
 
 class LoginPage extends Block {
   constructor() {
@@ -29,8 +29,7 @@ class LoginPage extends Block {
         events: {
           click: event => {
             event.preventDefault();
-            const data = {};
-            console.log(data);
+            submit('#form-login');
           }
         }
       })

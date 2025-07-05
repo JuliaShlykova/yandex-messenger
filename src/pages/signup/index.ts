@@ -2,6 +2,7 @@ import template from './signup.hbs?raw';
 import Block from '../../modules/Block';
 import Button from '../../components/button';
 import Input from '../../components/input';
+import submit from '../../utils/submit';
 
 class SignupPage extends Block {
   constructor() {
@@ -63,7 +64,13 @@ class SignupPage extends Block {
       }),
       button: new Button({
         type: 'submit',
-        text: 'Зарегистрироваться'
+        text: 'Зарегистрироваться',
+        events: {
+          click: event => {
+            event.preventDefault();
+            submit('#form-signup');
+          }
+        }
       })
     });
   }

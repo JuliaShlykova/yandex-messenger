@@ -2,6 +2,7 @@ import template from './profile.hbs?raw';
 import Block from '../../modules/Block';
 import Input from '../../components/input';
 import Button from '../../components/button';
+import submit from '../../utils/submit';
 
 class ProfilePage extends Block {
   constructor() {
@@ -70,7 +71,13 @@ class ProfilePage extends Block {
       }),
       buttonSubmit: new Button({
         type: 'submit',
-        text: 'Сохранить изменения'
+        text: 'Сохранить изменения',
+        events: {
+          click: event => {
+            event.preventDefault();
+            submit('#form-profile');
+          }
+        }
       }),
       buttonPassword: new Button({
         text: 'Изменить пароль'

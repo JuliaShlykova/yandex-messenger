@@ -13,6 +13,8 @@ export default function validate(name: string, value: string) {
       return /^\+?\d{10,15}/.test(value);
     case 'message':
       return value.trim().length > 0;
+    case 'avatar':
+      return true;
     default:
       return false;
   }
