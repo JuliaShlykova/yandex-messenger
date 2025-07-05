@@ -20,7 +20,7 @@ export default defineConfig([
       "object-curly-spacing": ["error", "always"],
       "arrow-parens": ["error", "as-needed"],
       "comma-dangle": ["error", "never"],
-      'max-len': ["error", { "code": 100 }]
+      'max-len': ["error", { "code": 120 }]
     },
   }
 ]);

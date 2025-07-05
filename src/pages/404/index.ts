@@ -1,4 +1,3 @@
-import './not-found.scss';
 import template from './not-found.hbs?raw';
 import Block from '../../modules/Block';
 

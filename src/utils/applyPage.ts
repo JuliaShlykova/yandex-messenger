@@ -1,10 +1,9 @@
 import Block from '../modules/Block';
 
-const app = document.querySelector('#app');
-
-const applyPage = <T extends Block> (page:T) => {
+const applyPage = <T extends Block> (page:T, query: string = '#app') => {
+  const app = document.querySelector(query);
   if (app) {
-    const child = app.firstChild;
+    const child = app.firstElementChild;
     if (child) {
       child.replaceWith(page.getContent());
     } else {

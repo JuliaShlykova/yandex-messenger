@@ -1,0 +1,19 @@
+<div class="chat-window">
+  <div class="chat-window-header">
+    {{name}}
+  </div>
+  <div class="messages-wrapper">
+    {{#each messages}}
+      <div class="msg {{#if (checkUser this.author)}}user-msg{{else}}other-user-msg{{/if}}">
+        {{this.text}}
+        {{this.timeStamp}}
+      </div>
+    {{/each}}
+  </div>
+  <form action="" class="form-message">
+    <input type="text" name="message" placeholder="Message..." class="input-message" />
+    <button type="submit" class="btn-send-msg">
+      <img src="/send_rocket.svg" alt="">
+    </button>
+  </form>
+</div>

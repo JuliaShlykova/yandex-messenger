@@ -1,0 +1,26 @@
+.search-wrapper  {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  padding: 0 5px;
+  color: var(--not-important-color);
+  background-color: var(--basic-color);
+  flex: 1;
+  border-radius: 40px;
+
+  button {
+    background-color: transparent;
+    border: none
+  }
+
+  input {
+    flex: 1;
+    font-family: inherit;
+    background-color: transparent;
+    border: none;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

@@ -1,9 +1,8 @@
-import './login.scss';
 import template from './login.hbs?raw';
 import Block from '../../modules/Block';
-// import { PropType } from '../../modules/EventBus';
 import Button from '../../components/button';
 import Input from '../../components/input';
+import { ObjectType, PrimitiveType } from '../../modules/types';
 
 class LoginPage extends Block {
   constructor() {
@@ -13,6 +12,7 @@ class LoginPage extends Block {
         name: 'login',
         label: 'Логин',
         id: 'login',
+        settings: { withInternalId: true },
         required: true
       }),
       inputPassword: new Input({
@@ -20,11 +20,19 @@ class LoginPage extends Block {
         name: 'password',
         label: 'Пароль',
         id: 'password',
+        settings: { withInternalId: true },
         required: true
       }),
       button: new Button({
         type: 'submit',
-        text: 'Войти'
+        text: 'Войти',
+        events: {
+          click: event => {
+            event.preventDefault();
+            const data = {};
+            console.log(data);
+          }
+        }
       })
     });
   }

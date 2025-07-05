@@ -1,4 +1,3 @@
-import './profile.scss';
 import template from './profile.hbs?raw';
 import Block from '../../modules/Block';
 import Input from '../../components/input';
@@ -11,13 +10,15 @@ class ProfilePage extends Block {
         type: 'file',
         name: 'avatar',
         label: 'Фото профиля',
-        id: 'avatar'
+        id: 'avatar',
+        settings: { withInternalId: true }
       }),
       inputFirstName: new Input({
         type: 'text',
         name: 'first_name',
         label: 'Имя',
         id: 'first-name',
+        settings: { withInternalId: true },
         required: true
       }),
       inputLastName: new Input({
@@ -25,6 +26,7 @@ class ProfilePage extends Block {
         name: 'second_name',
         label: 'Фамилия',
         id: 'second-name',
+        settings: { withInternalId: true },
         required: true
       }),
       inputLogin: new Input({
@@ -32,6 +34,7 @@ class ProfilePage extends Block {
         name: 'login',
         label: 'Логин',
         id: 'login',
+        settings: { withInternalId: true },
         required: true
       }),
       inputEmail: new Input({
@@ -39,6 +42,7 @@ class ProfilePage extends Block {
         name: 'email',
         label: 'Почта',
         id: 'email',
+        settings: { withInternalId: true },
         required: true
       }),
       inputPhone: new Input({
@@ -46,6 +50,7 @@ class ProfilePage extends Block {
         name: 'email',
         label: 'Телефон',
         id: 'phone',
+        settings: { withInternalId: true },
         required: true
       }),
       inputPassword: new Input({
@@ -53,12 +58,14 @@ class ProfilePage extends Block {
         name: 'password',
         label: 'Пароль',
         id: 'password',
+        settings: { withInternalId: true },
         required: true
       }),
       inputConfirmPassword: new Input({
         type: 'password',
         label: 'Повторите пароль',
         id: 'confirm-password',
+        settings: { withInternalId: true },
         required: true
       }),
       buttonSubmit: new Button({

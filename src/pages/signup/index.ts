@@ -1,4 +1,3 @@
-import './signup.scss';
 import template from './signup.hbs?raw';
 import Block from '../../modules/Block';
 import Button from '../../components/button';
@@ -12,6 +11,7 @@ class SignupPage extends Block {
         name: 'first_name',
         label: 'Имя',
         id: 'first-name',
+        settings: { withInternalId: true },
         required: true
       }),
       inputLastName: new Input({
@@ -19,6 +19,7 @@ class SignupPage extends Block {
         name: 'second_name',
         label: 'Фамилия',
         id: 'second-name',
+        settings: { withInternalId: true },
         required: true
       }),
       inputLogin: new Input({
@@ -26,6 +27,7 @@ class SignupPage extends Block {
         name: 'login',
         label: 'Логин',
         id: 'login',
+        settings: { withInternalId: true },
         required: true
       }),
       inputEmail: new Input({
@@ -33,6 +35,7 @@ class SignupPage extends Block {
         name: 'email',
         label: 'Почта',
         id: 'email',
+        settings: { withInternalId: true },
         required: true
       }),
       inputPhone: new Input({
@@ -40,6 +43,7 @@ class SignupPage extends Block {
         name: 'email',
         label: 'Телефон',
         id: 'phone',
+        settings: { withInternalId: true },
         required: true
       }),
       inputPassword: new Input({
@@ -47,12 +51,14 @@ class SignupPage extends Block {
         name: 'password',
         label: 'Пароль',
         id: 'password',
+        settings: { withInternalId: true },
         required: true
       }),
       inputConfirmPassword: new Input({
         type: 'password',
         label: 'Повторите пароль',
         id: 'confirm-password',
+        settings: { withInternalId: true },
         required: true
       }),
       button: new Button({

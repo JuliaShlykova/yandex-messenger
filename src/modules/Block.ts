@@ -1,10 +1,11 @@
-import EventBus, { PropType, isObject } from './EventBus';
+import EventBus from './EventBus';
+import { PropType, isObject } from './types';
 import Handlebars from 'handlebars';
 import makeUUID from '../utils/makeUUID';
 
 type ChildType = Record<string, Block>;
 
-type BlockProps = PropType | ChildType;
+export type BlockProps = PropType | ChildType;
 
 abstract class Block {
   static EVENTS = {

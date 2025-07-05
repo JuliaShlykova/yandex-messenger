@@ -1,4 +1,3 @@
-import './server-error.scss';
 import template from './server-error.hbs?raw';
 import Block from '../../modules/Block';
 
