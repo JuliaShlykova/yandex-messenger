@@ -1,18 +1,22 @@
 <main>
-{{#> CenteringWrapper}}
+<div class="centering-wrapper">
+  <div class="block">
   <h1>Профиль</h1>
   <div class="form-wrapper">
-    <form>
-      {{> Input type="file" name="avatar" id="avatar" label="Фото профиля"}}
-      {{> Input type="text" name="first_name" label="Имя" id="first-name" required=true}}
-      {{> Input type="text" name="second_name" label="Фамилия" id="second-name" required=true}}
-      {{> Input type="text" name="login" label="Логин" id="login" required=true}}
-      {{> Input type="email" name="email" label="Почта" id="email" required=true}}
-      {{> Input type="tel" name="phone" label="телефон" id="phone" required=true}}
-      {{> Button type="submit" text="Сохранить изменения"}}
-      {{> Button type="button" text="Изменить пароль"}}
+    <form id="form-profile">
+      {{{inputFile}}}
+      {{{inputFirstName}}}
+      {{{inputLastName}}}
+      {{{inputLogin}}}
+      {{{inputEmail}}}
+      {{{inputPhone}}}
+      {{{inputPassword}}}
+      {{{inputConfirmPassword}}}
+      {{{buttonSubmit}}}
+      {{{buttonPassword}}}
       <a href="/logout">Выйти</a>
     </form>
   </div>
-{{/ CenteringWrapper}}
+  </div>
+  </div>
 </main>

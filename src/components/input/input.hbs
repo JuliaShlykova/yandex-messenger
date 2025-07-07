@@ -1,4 +1,9 @@
 <div class="input-wrapper">
   <label for={{id}}>{{label}}</label>
-  <input type={{type}} name={{name}} id={{id}} required={{required}}>
+  {{{ inputField }}}
+  {{#if error}}
+    <div class="input-error">
+      {{error}}
+    </div>
+  {{/if}}
 </div>
