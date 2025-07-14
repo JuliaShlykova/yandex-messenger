@@ -13,6 +13,7 @@
     "noEmit": true,
     "noImplicitReturns": true,
     "skipLibCheck": true,
+    "strictPropertyInitialization": false,
 
     "noImplicitAny": true,
     "noUnusedLocals": true,

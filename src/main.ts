@@ -1,9 +1,19 @@
 import './style.scss';
 import * as Pages from './pages';
-import setFooter from './modules/setFooter';
-import applyPage from './utils/applyPage';
+import Router from './modules/routing/Router';
 
-setFooter();
+document.addEventListener('DOMContentLoaded', () => {
+  const router = new Router();
 
-const login = new Pages.Login();
-applyPage<Pages.Login>(login);
+  router
+      .use('/', Pages.Login)
+      .use('/sign-in', Pages.Login)
+      .use('/sign-up', Pages.Signup)
+      .use('/settings', Pages.Profile)
+      .use('/messenger', Pages.Chat)
+      .use('/not-found', Pages.NotFound)
+      .use('/server-error', Pages.ServerError)
+      .start();
+
+  // router.go('/messenger');
+});

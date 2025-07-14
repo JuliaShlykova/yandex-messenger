@@ -1,6 +1,6 @@
 import Block from '../modules/Block';
 
-const applyPage = <T extends Block> (page:T, query: string = '#app') => {
+const applyPage = (page: Block, query: string = '#app') => {
   const app = document.querySelector(query);
   if (app) {
     const child = app.firstElementChild;

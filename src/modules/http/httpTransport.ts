@@ -1,14 +1,17 @@
-import { PrimitiveType } from './types';
+import { PrimitiveType } from '../types';
 
 type DataQuery = Record<string, PrimitiveType | PrimitiveType[] | Record<string, PrimitiveType>>;
 
 type Data = DataQuery | FormData;
 
 interface Options {
-  method: string,
   headers?: Record<string, string>
   data?: Data,
   timeout?: number
+}
+
+interface RequestOptions extends Options {
+  method: string;
 }
 
 const METHODS = {
@@ -28,33 +31,41 @@ function queryStringify(data: DataQuery) {
   return '?' + query.join('&');
 }
 
+type HTTPMethod<R> = (url: string, options?: Options) => Promise<R>;
+
 class HTTPTransport {
-  get = (url: string, options: Options): Promise<XMLHttpRequest> => {
-    return this.request(url, { ...options, method: METHODS.GET }, options.timeout);
+  private _baseUrl: string;
+
+  constructor(baseUrl: string) {
+    this._baseUrl = baseUrl;
+  }
+
+  get: HTTPMethod<XMLHttpRequest> = (url, options) => {
+    return this.request(url, { ...options, method: METHODS.GET }, options?.timeout);
   };
 
-  put = (url: string, options: Options): Promise<XMLHttpRequest> => {
-    return this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
+  put: HTTPMethod<XMLHttpRequest> = (url, options) => {
+    return this.request(url, { ...options, method: METHODS.PUT }, options?.timeout);
   };
 
-  post = (url: string, options: Options): Promise<XMLHttpRequest> => {
-    return this.request(url, { ...options, method: METHODS.POST }, options.timeout);
+  post: HTTPMethod<XMLHttpRequest> = (url, options) => {
+    return this.request(url, { ...options, method: METHODS.POST }, options?.timeout);
   };
 
-  delete = (url: string, options: Options): Promise<XMLHttpRequest> => {
-    return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
+  delete: HTTPMethod<XMLHttpRequest> = (url, options) => {
+    return this.request(url, { ...options, method: METHODS.DELETE }, options?.timeout);
   };
 
-  request = (url: string, options: Options, timeout: number = 5000): Promise<XMLHttpRequest> => {
+  request = (url: string, options: RequestOptions, timeout: number = 5000): Promise<XMLHttpRequest> => {
     const { headers = {}, method, data } = options;
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
 
       if (method === METHODS.GET && data) {
-        const urlWithQuery = url + queryStringify(data as DataQuery);
+        const urlWithQuery = this._baseUrl + url + queryStringify(data as DataQuery);
         xhr.open(method, urlWithQuery);
       } else {
-        xhr.open(method, url);
+        xhr.open(method, this._baseUrl + url);
       }
 
       Object.keys(headers).forEach(header=>{

@@ -2,6 +2,7 @@
 
 :root {
   --primary-color: #212D3F;
+  --contrast-color: white;
   --secondary-color: #7AA6E9;
   --not-important-color: #555;
   --error-color: #D31023;
@@ -52,8 +53,8 @@ form {
   justify-content: center;
 }
 
-.white {
-  color: white;
+.contrast-text {
+  color: var(--contrast-color);
 }
 
 .centering-wrapper {
@@ -63,7 +64,7 @@ form {
   height: 100%;
 
   .block {
-    background-color: white;
+    background-color: var(--contrast-color);
     border-radius: 36px;
     padding: 20px;
     display: flex;

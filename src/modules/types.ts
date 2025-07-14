@@ -10,3 +10,5 @@ export function isObject( propValue: PrimitiveType | ObjectType | (() => void) |
 }
 
 export type EventCallback = (...args: PropType[]) => void;
+
+export type Nullable<T> = T | null;
