@@ -1,5 +1,5 @@
 import applyPage from '../../utils/applyPage';
-import isEqual from './utils/isEqual';
+import isEqual from '../../utils/isEqual';
 import Block from '../Block';
 import { BlockConstructor } from './Router';
 import { Nullable } from '../types';

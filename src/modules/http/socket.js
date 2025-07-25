@@ -11,14 +11,36 @@
 //   socket.send('Hello, Server!');
 // }
 
-const socket = new WebSocket('wss://ws.postman-echo.com/raw');
+const socket = new WebSocket('wss://ya-praktikum.tech/ws/chats/<USER_ID>/<CHAT_ID>/<TOKEN_VALUE>');
 
+// in open we immediately send a message to everyone, who is connected
 socket.addEventListener('open', function(event) {
   console.log('Соединение установлено');
+
+  socket.send(JSON.stringify({
+    content: 'My first message!',
+    type: 'message'
+  }));
 });
 
+// message is evoked, when server sends a message
 socket.addEventListener('message', function(event) {
   console.log('Сообщение от сервера:', event.data);
+});
+
+// close is evoked when something has killed the process
+socket.addEventListener('close', event => {
+  if (event.wasClean) {
+    console.log('connection is closed cleanly');
+  } else {
+    console.log('connection is closed abruptly');
+  }
+
+  console.log(`Code: ${event.code} | Cause: ${event.reason}`);
+});
+
+socket.addEventListener('error', event => {
+  console.log('Error', event.message);
 });
 
 // Дождитесь появления в консоли сообщения об установке соединения

@@ -12,3 +12,12 @@ export function isObject( propValue: PrimitiveType | ObjectType | (() => void) |
 export type EventCallback = (...args: PropType[]) => void;
 
 export type Nullable<T> = T | null;
+
+export interface LoginFormModel {
+  email: string;
+  password: string;
+}
+
+export type PlainObject<T = unknown> = {
+  [k: string]: T;
+};

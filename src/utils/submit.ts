@@ -1,3 +1,4 @@
+import RouterManagement from '../modules/routing/RouterManagement';
 import validate from './validate';
 
 export default function submit(formQuery: string) {
@@ -17,6 +18,6 @@ export default function submit(formQuery: string) {
   console.log(data);
 
   if (!failedValidation) {
-    window.location.href = '/messenger';
+    RouterManagement.go('/messenger');
   }
 }

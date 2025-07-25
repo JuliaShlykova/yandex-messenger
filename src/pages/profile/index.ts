@@ -12,6 +12,7 @@ class ProfilePage extends Block {
         name: 'avatar',
         label: 'Фото профиля',
         id: 'avatar',
+        accept: 'image/*',
         settings: { withInternalId: true }
       }),
       inputFirstName: new Input({

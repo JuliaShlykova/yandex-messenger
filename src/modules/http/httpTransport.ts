@@ -1,43 +1,12 @@
-import { PrimitiveType } from '../types';
+import { HOST, METHODS } from './Constants';
+import { DataQuery, HTTPMethod, RequestOptions } from './types';
+import queryStringify from './utils/queryStringify';
 
-type DataQuery = Record<string, PrimitiveType | PrimitiveType[] | Record<string, PrimitiveType>>;
-
-type Data = DataQuery | FormData;
-
-interface Options {
-  headers?: Record<string, string>
-  data?: Data,
-  timeout?: number
-}
-
-interface RequestOptions extends Options {
-  method: string;
-}
-
-const METHODS = {
-  GET: 'GET',
-  PUT: 'PUT',
-  POST: 'POST',
-  DELETE: 'DELETE'
-};
-
-function queryStringify(data: DataQuery) {
-  const query: string[] = [];
-
-  Object.keys(data).forEach(opt => {
-    query.push(opt.toString() + '=' + data[opt].toString());
-  });
-
-  return '?' + query.join('&');
-}
-
-type HTTPMethod<R> = (url: string, options?: Options) => Promise<R>;
-
-class HTTPTransport {
+class HTTP {
   private _baseUrl: string;
 
-  constructor(baseUrl: string) {
-    this._baseUrl = baseUrl;
+  constructor(baseUrl: string = '') {
+    this._baseUrl = HOST + baseUrl;
   }
 
   get: HTTPMethod<XMLHttpRequest> = (url, options) => {
@@ -91,4 +60,4 @@ class HTTPTransport {
   };
 }
 
-export default HTTPTransport;
+export default HTTP;
