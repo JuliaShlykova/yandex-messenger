@@ -1,12 +1,15 @@
+import './profile.scss';
 import template from './profile.hbs?raw';
 import Block from '../../modules/Block';
 import Input from '../../components/input';
 import Button from '../../components/button';
 import submit from '../../utils/submit';
+import RouterManagement from '../../modules/routing/RouterManagement';
 
 class ProfilePage extends Block {
   constructor() {
     super({
+      avatarSrc: '/change-avatar.svg',
       inputFile: new Input({
         type: 'file',
         name: 'avatar',
@@ -82,6 +85,24 @@ class ProfilePage extends Block {
       }),
       buttonPassword: new Button({
         text: 'Изменить пароль'
+      }),
+      buttonLogout: new Button({
+        text: 'Выйти',
+        class: 'btn-link',
+        events: {
+          click: () => {
+            RouterManagement.go('/sign-in');
+          }
+        }
+      }),
+      buttonLinkMessenger: new Button({
+        imgSrc: '/arrow-left.svg',
+        class: 'btn-link-messenger',
+        events: {
+          click: () => {
+            RouterManagement.go('/messenger');
+          }
+        }
       })
     });
   }

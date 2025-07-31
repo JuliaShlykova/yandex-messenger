@@ -3,6 +3,7 @@ import Block from '../../modules/Block';
 import Button from '../../components/button';
 import Input from '../../components/input';
 import submit from '../../utils/submit';
+import RouterManagement from '../../modules/routing/RouterManagement';
 
 class LoginPage extends Block {
   constructor() {
@@ -30,6 +31,15 @@ class LoginPage extends Block {
           click: event => {
             event.preventDefault();
             submit('#form-login');
+          }
+        }
+      }),
+      buttonLink: new Button({
+        text: 'Создать аккаунт',
+        class: 'btn-link',
+        events: {
+          click: () => {
+            RouterManagement.go('/sign-up');
           }
         }
       })

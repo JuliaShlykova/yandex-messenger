@@ -9,8 +9,16 @@
 
 .chat-window-header {
   background-color: white;
+  height: 40px;
+  position: relative;
   padding: 10px;
-  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  span {
+    font-weight: bold;
+  }
 }
 
 .messages-wrapper {

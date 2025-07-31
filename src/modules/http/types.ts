@@ -4,14 +4,21 @@ export type DataQuery = Record<string, PrimitiveType | PrimitiveType[] | Record<
 
 export type Data = DataQuery | FormData;
 
+interface Signal {
+  handler?: () => void;
+}
+
 export interface Options {
   headers?: Record<string, string>
   data?: Data,
-  timeout?: number
+  timeout?: number,
+  signal?: Signal,
+  withCredentials?: boolean,
+  responseType?: XMLHttpRequestResponseType
 }
 
 export interface RequestOptions extends Options {
   method: string;
 }
 
-export type HTTPMethod<R> = (url: string, options?: Options) => Promise<R>;
+export type HTTPMethod<R = unknown> = (url: string, options?: Options) => Promise<R>;

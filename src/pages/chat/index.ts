@@ -6,6 +6,8 @@ import ChatItem from './components/chat-item';
 import { chatInfo, chatWindow } from './mockdata';
 import applyPage from '../../utils/applyPage';
 import ChatWindow from './components/chat-window';
+import Button from '../../components/button';
+import RouterManagement from '../../modules/routing/RouterManagement';
 
 const chatItemComponent = new ChatItem({
   ...chatInfo,
@@ -15,7 +17,7 @@ const chatItemComponent = new ChatItem({
       if (target) {
         target.classList.add('chosen');
       }
-      const chat = new ChatWindow(chatWindow);
+      const chat = new ChatWindow({...chatWindow, settings: {withInternalId: true}});
       applyPage(chat, '.chat-window-wrapper');
     }
   }
@@ -24,8 +26,21 @@ const chatItemComponent = new ChatItem({
 class ChatPage extends Block {
   constructor() {
     super({
-      searchBar: new SearchBar(),
-      chatitem: chatItemComponent
+      searchBar: new SearchBar({settings: {withInternalId: true}}),
+      chatitem: chatItemComponent,
+      buttonLinkToProfile: new Button({
+        class: "link-to-profile",
+        text: "A",
+        events: {
+          click: () => {
+            RouterManagement.go('/settings');
+          }
+        }
+      }),
+      buttonCreateChat: new Button({
+        class: 'btn-create-chat',
+        imgSrc: '/pen.svg'
+      })
     });
   }
 

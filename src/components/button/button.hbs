@@ -1,7 +1,8 @@
 <button
-  class="{{#if class}}{{class}}{{else}}btn-standard{{/if}}"
+  class="{{#if class}}{{class}}{{else if imgSrc}}btn-standard-img{{else}}btn-standard{{/if}}"
  {{#if disabled}} disabled {{/if}}
  type="{{#if type}}{{type}}{{else}}button{{/if}}"
 >
-  {{text}}
+  {{#if imgSrc}}<img src="{{imgSrc}}" alt="{{#if alt}}{{alt}}{{else}}button{{/if}}">{{/if}}
+  {{#if text}}<span>{{text}}</span>{{/if}}
 </button>

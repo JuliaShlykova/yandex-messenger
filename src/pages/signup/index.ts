@@ -3,6 +3,7 @@ import Block from '../../modules/Block';
 import Button from '../../components/button';
 import Input from '../../components/input';
 import submit from '../../utils/submit';
+import RouterManagement from '../../modules/routing/RouterManagement';
 
 class SignupPage extends Block {
   constructor() {
@@ -69,6 +70,15 @@ class SignupPage extends Block {
           click: event => {
             event.preventDefault();
             submit('#form-signup');
+          }
+        }
+      }),
+      buttonLink: new Button({
+        text: 'Уже есть аккаунт',
+        class: 'btn-link',
+        events: {
+          click: () => {
+            RouterManagement.go('/sign-in');
           }
         }
       })

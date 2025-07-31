@@ -11,6 +11,10 @@ class Button extends Block {
     });
   }
 
+  show() {
+    this.getContent().style.display = 'inline-block';
+  }
+
   render() {
     return template;
   }

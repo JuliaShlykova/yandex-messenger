@@ -21,7 +21,8 @@ export default defineConfig([
       "arrow-parens": ["error", "as-needed"],
       "comma-dangle": ["error", "never"],
       'max-len': ["error", { "code": 120 }],
-      "operator-linebreak": ["error", "before"]
+      "operator-linebreak": ["error", "before"],
+      "prefer-promise-reject-errors": ["error", "false"]
     },
   }
 ]);

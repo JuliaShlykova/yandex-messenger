@@ -16,9 +16,10 @@ class Router {
 
   constructor() {
     if (Router.__instance) {
+      console.log('router old');
       return Router.__instance;
     }
-
+    console.log('router new');
     this.routes = [];
     this.history = window.history;
     this._currentRoute = null;
@@ -33,9 +34,7 @@ class Router {
 
   start() {
     window.onpopstate = (event: PopStateEvent) => {
-      this._onRoute(window.location.pathname);
-      console.log('current target of popstate: ', event.currentTarget);
-      // this._onRoute(event.currentTarget?.location.pathname);
+      this._onRoute((event.currentTarget as Window).location.pathname);
     };
 
     this._onRoute(window.location.pathname);
@@ -48,10 +47,12 @@ class Router {
       return;
     }
 
-    if (this._currentRoute) {
+    if (this._currentRoute && this._currentRoute !== route) {
       this._currentRoute.leave();
     }
 
+    this._currentRoute = route;
+    
     route.render();
   }
 

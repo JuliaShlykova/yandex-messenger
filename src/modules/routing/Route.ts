@@ -1,5 +1,4 @@
 import applyPage from '../../utils/applyPage';
-import isEqual from '../../utils/isEqual';
 import Block from '../Block';
 import { BlockConstructor } from './Router';
 import { Nullable } from '../types';
@@ -31,12 +30,13 @@ export default class Route {
 
   leave() {
     if (this._block) {
-      this._block.hide();
+      // this._block.hide();
+      this._block = null;
     }
   }
 
   match(pathname: string) {
-    return isEqual(pathname, this._pathname);
+    return this._pathname === pathname;
   }
 
   render() {

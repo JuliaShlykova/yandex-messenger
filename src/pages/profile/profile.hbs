@@ -1,9 +1,14 @@
 <main>
+{{{buttonLinkMessenger}}}
 <div class="centering-wrapper">
   <div class="block">
   <h1>Профиль</h1>
   <div class="form-wrapper">
     <form id="form-profile">
+      <label for="avatar">
+        <img src="/change-avatar.svg" alt="">
+      </label>
+      <input id="avatar" name="avatar" accept="image/*" type="file" />
       {{{inputFile}}}
       {{{inputFirstName}}}
       {{{inputLastName}}}
@@ -14,7 +19,7 @@
       {{{inputConfirmPassword}}}
       {{{buttonSubmit}}}
       {{{buttonPassword}}}
-      <a href="/logout">Выйти</a>
+      {{{buttonLogout}}}
     </form>
   </div>
   </div>

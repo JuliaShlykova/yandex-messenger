@@ -1,6 +1,9 @@
 <div class="chat-window">
   <div class="chat-window-header">
-    {{name}}
+    <span>{{name}}</span>
+    {{{buttonOpenMenu}}}
+    {{{buttonCloseMenu}}}
+    {{{popUpMenu}}}
   </div>
   <div class="messages-wrapper">
     {{#each messages}}
@@ -12,8 +15,6 @@
   </div>
   <form action="" class="form-message">
     <input type="text" name="message" placeholder="Message..." class="input-message" />
-    <button type="submit" class="btn-send-msg">
-      <img src="/send_rocket.svg" alt="">
-    </button>
+    {{{buttonSendMessage}}}
   </form>
 </div>
