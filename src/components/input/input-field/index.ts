@@ -1,11 +1,10 @@
 import template from './inputField.hbs?raw';
-import Block from '../../../modules/Block';
-import { PropType } from '../../../modules/types';
+import Block, { BlockProps } from '../../../modules/Block';
 import validate from '../../../utils/validate';
 import showValidationError from '../../../utils/showValidationError';
 
 class InputField extends Block {
-  constructor(props: PropType) {
+  constructor(props: BlockProps) {
     super({
       ...props,
       events: {

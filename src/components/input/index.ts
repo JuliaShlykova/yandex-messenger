@@ -1,11 +1,10 @@
 import './input.scss';
 import template from './input.hbs?raw';
-import Block from '../../modules/Block';
-import { PropType } from '../../modules/types';
+import Block, { BlockProps } from '../../modules/Block';
 import InputField from './input-field';
 
 class Input extends Block {
-  constructor(props: PropType) {
+  constructor(props: BlockProps) {
     super({
       ...props,
       inputField: new InputField({

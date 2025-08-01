@@ -1,10 +1,9 @@
 import './chat-item.scss';
-import Block from '../../../../modules/Block';
+import Block, { BlockProps } from '../../../../modules/Block';
 import template from './chat-item.hbs?raw';
-import { PropType } from '../../../../modules/types';
 
 class ChatItem extends Block {
-  constructor(props: PropType) {
+  constructor(props: BlockProps) {
     super({
       ...props,
       settings: {

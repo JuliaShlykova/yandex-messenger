@@ -1,14 +1,14 @@
 import { PlainObject } from '../modules/types';
 import { isArrayOrObject } from './checkTypes';
 
-function isEqual(a: PlainObject, b: PlainObject): boolean {
+function isObjectEqual(a: PlainObject, b: PlainObject): boolean {
   if (Object.keys(a).length !== Object.keys(b).length) {
     return false;
   }
   for (const [key, value] of Object.entries(a)) {
     const bValue = b[key];
     if (isArrayOrObject(value) && isArrayOrObject(bValue)) {
-      if (!isEqual(value as PlainObject, bValue as PlainObject)) {
+      if (!isObjectEqual(value as PlainObject, bValue as PlainObject)) {
         return false;
       }
     } else if (value !== bValue) {
@@ -19,4 +19,4 @@ function isEqual(a: PlainObject, b: PlainObject): boolean {
   return true;
 }
 
-export default isEqual;
+export default isObjectEqual;

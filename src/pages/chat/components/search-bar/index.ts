@@ -1,11 +1,10 @@
 import './search-bar.scss';
-import Block from '../../../../modules/Block';
+import Block, { BlockProps } from '../../../../modules/Block';
 import template from './search-bar.hbs?raw';
-import { PropType } from '../../../../modules/types';
 import Button from '../../../../components/button';
 
 class SearchBar extends Block {
-  constructor(props: PropType) {
+  constructor(props: BlockProps) {
     super({
       ...props,
       buttonSearch: new Button({

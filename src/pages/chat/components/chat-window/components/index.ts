@@ -1,11 +1,10 @@
 import Button from '../../../../../components/button';
-import Block from '../../../../../modules/Block';
-import { PropType } from '../../../../../modules/types';
+import Block, { BlockProps } from '../../../../../modules/Block';
 import template from './pop-up-menu.hbs?raw';
 import './pop-up-menu.scss';
 
 class PopupMenu extends Block {
-  constructor(props: PropType) {
+  constructor(props: BlockProps) {
     super({
       ...props,
       buttonAddUser: new Button({

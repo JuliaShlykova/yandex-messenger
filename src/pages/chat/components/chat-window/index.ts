@@ -1,8 +1,7 @@
 import Handlebars from 'handlebars';
 import './chat-window.scss';
-import Block from '../../../../modules/Block';
+import Block, { BlockProps } from '../../../../modules/Block';
 import template from './chat-window.hbs?raw';
-import { PropType } from '../../../../modules/types';
 import PopupMenu from './components';
 import Button from '../../../../components/button';
 
@@ -11,7 +10,7 @@ Handlebars.registerHelper('checkUser', function(author) {
 });
 
 class ChatWindow extends Block {
-  constructor(props: PropType) {
+  constructor(props: BlockProps) {
     super({
       ...props,
       buttonSendMessage: new Button({
