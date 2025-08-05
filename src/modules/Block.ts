@@ -3,6 +3,7 @@ import EventBus from './EventBus';
 import Handlebars from 'handlebars';
 import makeUUID from '../utils/makeUUID';
 import isObjectEqual from '../utils/isObjectEqual';
+import cloneDeep from '../utils/cloneDeep';
 
 // type ChildType = Record<string, Block>;
 interface ChildType {
@@ -16,7 +17,7 @@ interface SettingsType {
 
 interface EventsCallbackTypes {
   [key: string]: (e: Event) => void
-} 
+}
 export interface BlockProps {
   events?: EventsCallbackTypes,
   settings?: SettingsType,
@@ -98,15 +99,15 @@ abstract class Block<T = Record<string, unknown>> {
   }
 
   protected componentDidUpdate(oldProps: T & BlockProps, newProps: T & BlockProps): boolean {
-    return isObjectEqual(oldProps, newProps);
+    return !isObjectEqual(oldProps, newProps);
   }
 
-  public setProps = (nextProps: BlockProps) => {
+  public setProps = (nextProps: T & BlockProps) => {
     if (!nextProps) {
       return;
     }
 
-    this._oldProps = { ...this.props };
+    this._oldProps = cloneDeep(this.props) as T & BlockProps;
     Object.assign(this.props, nextProps);
   };
 
@@ -173,9 +174,9 @@ abstract class Block<T = Record<string, unknown>> {
         return typeof value === 'function' ? value.bind(target) : value;
       },
       set(target, prop: string, value) {
-        const oldTarget = { ...target };
+        const oldTarget = cloneDeep(target);
         target[prop as keyof T & BlockProps] = value;
-        that.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
+        that.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget as T & BlockProps, target);
         return true;
       },
       deleteProperty() {
@@ -225,13 +226,13 @@ abstract class Block<T = Record<string, unknown>> {
     const props: T & BlockProps = {} as T & BlockProps;
 
     (Object.keys(propsAndChildren) as (keyof T & BlockProps)[]).forEach(key => {
-      let value = propsAndChildren[key];
+      const value = propsAndChildren[key];
       if (value instanceof Block) {
         children[key as keyof ChildType] = value;
       } else {
         props[key] = value;
       }
-    })
+    });
 
     return { children, props };
   }

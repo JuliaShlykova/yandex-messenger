@@ -38,7 +38,9 @@ class HTTPTransport {
       }
 
       if (signal) {
-        signal.handler = () => { xhr.abort(); };
+        signal.handler = () => {
+          xhr.abort();
+        };
       }
 
       xhr.onload = function() {
@@ -54,13 +56,13 @@ class HTTPTransport {
             '400': 'Access error',
             '500': 'Internal server error'
           }[Math.floor(status / 100) * 100];
-          reject({status, reason: xhr.response?.reason || message});
+          reject({ status, reason: xhr.response?.reason || message });
         }
       };
 
-      xhr.onabort = () => reject({reason: 'abort'});
-      xhr.onerror = () => reject({reason: 'network error'});
-      xhr.ontimeout = () => reject({reason: 'timeout'});
+      xhr.onabort = () => reject({ reason: 'abort' });
+      xhr.onerror = () => reject({ reason: 'network error' });
+      xhr.ontimeout = () => reject({ reason: 'timeout' });
 
       Object.keys(headers).forEach(header=>{
         xhr.setRequestHeader(header, headers[header]);

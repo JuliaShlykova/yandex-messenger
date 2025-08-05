@@ -5,25 +5,35 @@ import Input from '../../components/input';
 import Button from '../../components/button';
 import submit from '../../utils/submit';
 import RouterManagement from '../../modules/routing/RouterManagement';
+import InputField from '../../components/input/input-field';
 
 class ProfilePage extends Block {
   constructor() {
     super({
-      avatarSrc: '/change-avatar.svg',
-      inputFile: new Input({
+      avatarSrc: '/image-placeholder.svg',
+      inputFile: new InputField({
         type: 'file',
         name: 'avatar',
-        label: 'Фото профиля',
         id: 'avatar',
         accept: 'image/*',
-        settings: { withInternalId: true }
+        events: {
+          change: e => {
+            const files = (e.target as HTMLInputElement).files;
+            if (files?.length === 1) {
+              const file = files[0];
+              const fileURL = URL.createObjectURL(file);
+              console.log(this.props.avatarSrc);
+              this.setProps({ avatarSrc: fileURL });
+              console.log(this.props.avatarSrc);
+            }
+          }
+        }
       }),
       inputFirstName: new Input({
         type: 'text',
         name: 'first_name',
         label: 'Имя',
         id: 'first-name',
-        settings: { withInternalId: true },
         required: true
       }),
       inputLastName: new Input({
@@ -31,7 +41,6 @@ class ProfilePage extends Block {
         name: 'second_name',
         label: 'Фамилия',
         id: 'second-name',
-        settings: { withInternalId: true },
         required: true
       }),
       inputLogin: new Input({
@@ -39,7 +48,6 @@ class ProfilePage extends Block {
         name: 'login',
         label: 'Логин',
         id: 'login',
-        settings: { withInternalId: true },
         required: true
       }),
       inputEmail: new Input({
@@ -47,7 +55,6 @@ class ProfilePage extends Block {
         name: 'email',
         label: 'Почта',
         id: 'email',
-        settings: { withInternalId: true },
         required: true
       }),
       inputPhone: new Input({
@@ -55,7 +62,6 @@ class ProfilePage extends Block {
         name: 'email',
         label: 'Телефон',
         id: 'phone',
-        settings: { withInternalId: true },
         required: true
       }),
       inputPassword: new Input({
@@ -63,14 +69,12 @@ class ProfilePage extends Block {
         name: 'password',
         label: 'Пароль',
         id: 'password',
-        settings: { withInternalId: true },
         required: true
       }),
       inputConfirmPassword: new Input({
         type: 'password',
         label: 'Повторите пароль',
         id: 'confirm-password',
-        settings: { withInternalId: true },
         required: true
       }),
       buttonSubmit: new Button({
@@ -84,7 +88,12 @@ class ProfilePage extends Block {
         }
       }),
       buttonPassword: new Button({
-        text: 'Изменить пароль'
+        text: 'Изменить пароль',
+        events: {
+          click: () => {
+            RouterManagement.go('/change-password');
+          }
+        }
       }),
       buttonLogout: new Button({
         text: 'Выйти',
@@ -97,7 +106,7 @@ class ProfilePage extends Block {
       }),
       buttonLinkMessenger: new Button({
         imgSrc: '/arrow-left.svg',
-        class: 'btn-link-messenger',
+        class: 'btn-link-in-profile',
         events: {
           click: () => {
             RouterManagement.go('/messenger');

@@ -2,8 +2,11 @@ import Handlebars from 'handlebars';
 import './chat-window.scss';
 import Block, { BlockProps } from '../../../../modules/Block';
 import template from './chat-window.hbs?raw';
-import PopupMenu from './components';
+import PopupMenu from './components/pop-up-menu';
 import Button from '../../../../components/button';
+import AddUser from './components/add-user';
+import RemoveUser from './components/remove-user';
+import DeleteChat from './components/delete-chat';
 
 Handlebars.registerHelper('checkUser', function(author) {
   return author === 'User';
@@ -42,14 +45,26 @@ class ChatWindow extends Block {
         }
       }),
       popUpMenu: new PopupMenu({
-        settings: {
-          withInternalId: true
+        onAddUser: () => {
+          this.children.addUser.show();
+        },
+        onRemoveUser: () => {
+          this.children.removeUser.show();
+        },
+        onDeleteChat: () => {
+          this.children.deleteChat.show();
         }
-      })
+      }),
+      addUser: new AddUser({}),
+      removeUser: new RemoveUser({}),
+      deleteChat: new DeleteChat({})
     });
   }
 
   render() {
+    this.children.addUser.hide();
+    this.children.removeUser.hide();
+    this.children.deleteChat.hide();
     this.children.popUpMenu.hide();
     this.children.buttonCloseMenu.hide();
     return template;

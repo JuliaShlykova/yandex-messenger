@@ -10,6 +10,7 @@ RouterManagement
     .use('/settings', Pages.Profile)
     .use('/messenger', Pages.Chat)
     .use('/not-found', Pages.NotFound)
-    .use('/server-error', Pages.ServerError);
+    .use('/server-error', Pages.ServerError)
+    .use('/change-password', Pages.ChangePassword);
 
 export default RouterManagement;

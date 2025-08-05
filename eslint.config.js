@@ -22,7 +22,7 @@ export default defineConfig([
       "comma-dangle": ["error", "never"],
       'max-len': ["error", { "code": 120 }],
       "operator-linebreak": ["error", "before"],
-      "prefer-promise-reject-errors": ["error", "false"]
+      "prefer-promise-reject-errors": "off"
     },
   }
 ]);

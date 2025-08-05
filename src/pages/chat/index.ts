@@ -8,6 +8,7 @@ import applyPage from '../../utils/applyPage';
 import ChatWindow from './components/chat-window';
 import Button from '../../components/button';
 import RouterManagement from '../../modules/routing/RouterManagement';
+import CreateChat from './components/create-chat';
 
 const chatItemComponent = new ChatItem({
   ...chatInfo,
@@ -17,7 +18,7 @@ const chatItemComponent = new ChatItem({
       if (target) {
         target.classList.add('chosen');
       }
-      const chat = new ChatWindow({...chatWindow, settings: {withInternalId: true}});
+      const chat = new ChatWindow({ ...chatWindow, settings: { withInternalId: true } });
       applyPage(chat, '.chat-window-wrapper');
     }
   }
@@ -26,11 +27,11 @@ const chatItemComponent = new ChatItem({
 class ChatPage extends Block {
   constructor() {
     super({
-      searchBar: new SearchBar({settings: {withInternalId: true}}),
+      searchBar: new SearchBar({ settings: { withInternalId: true } }),
       chatitem: chatItemComponent,
       buttonLinkToProfile: new Button({
-        class: "link-to-profile",
-        text: "A",
+        class: 'link-to-profile',
+        text: 'A',
         events: {
           click: () => {
             RouterManagement.go('/settings');
@@ -39,12 +40,20 @@ class ChatPage extends Block {
       }),
       buttonCreateChat: new Button({
         class: 'btn-create-chat',
-        imgSrc: '/pen.svg'
-      })
+        imgSrc: '/pen.svg',
+        events: {
+          click: () => {
+            this.children.createChat.show();
+          }
+        }
+      }),
+      createChat: new CreateChat({})
     });
   }
 
   render() {
+    this.children.createChat.hide();
+
     return template;
   }
 }

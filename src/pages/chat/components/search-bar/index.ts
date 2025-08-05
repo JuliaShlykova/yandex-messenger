@@ -10,7 +10,7 @@ class SearchBar extends Block {
       buttonSearch: new Button({
         type: 'submit',
         imgSrc: '/search.svg',
-        alt: 'search',
+        alt: 'search'
       })
     });
   }

@@ -15,7 +15,7 @@ class UserAPI extends BaseAPI {
   }
 
   update(data?: FormData) {
-    return userAPIInstance.post('/', {data});
+    return userAPIInstance.post('/', { data });
   }
 }
 

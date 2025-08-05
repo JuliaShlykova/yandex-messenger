@@ -5,18 +5,20 @@
   <h1>Профиль</h1>
   <div class="form-wrapper">
     <form id="form-profile">
-      <label for="avatar">
-        <img src={{avatarSrc}} alt="avatar">
-      </label>
-      <input id="avatar" name="avatar" accept="image/*" type="file" />
-      {{{inputFile}}}
+      <div id="avatar-input-wrapper">
+        <div id="avatar-preview-wrapper">
+          <img src={{avatarSrc}} alt="avatar">
+        </div>
+        <label id="change-avatar-icon" for="avatar">
+          <img src="/change-avatar.svg" alt="change avatar">
+        </label>
+        {{{inputFile}}}
+      </div>
       {{{inputFirstName}}}
       {{{inputLastName}}}
       {{{inputLogin}}}
       {{{inputEmail}}}
       {{{inputPhone}}}
-      {{{inputPassword}}}
-      {{{inputConfirmPassword}}}
       {{{buttonSubmit}}}
       {{{buttonPassword}}}
       {{{buttonLogout}}}

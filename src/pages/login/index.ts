@@ -13,7 +13,6 @@ class LoginPage extends Block {
         name: 'login',
         label: 'Логин',
         id: 'login',
-        settings: { withInternalId: true },
         required: true
       }),
       inputPassword: new Input({
@@ -21,7 +20,6 @@ class LoginPage extends Block {
         name: 'password',
         label: 'Пароль',
         id: 'password',
-        settings: { withInternalId: true },
         required: true
       }),
       button: new Button({
