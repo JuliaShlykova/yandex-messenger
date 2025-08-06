@@ -1,7 +1,7 @@
 import Button from '../../../../components/button';
 import Input from '../../../../components/input';
 import Block, { BlockProps } from '../../../../modules/Block';
-import submit from '../../../../utils/submit';
+import shapedData from '../../../../utils/shapeData';
 import template from './create-chat.hbs?raw';
 
 class CreateChat extends Block {
@@ -24,7 +24,7 @@ class CreateChat extends Block {
         events: {
           click: event => {
             event.preventDefault();
-            submit('#form-create-chat');
+            shapedData('#form-create-chat');
           }
         }
       }),

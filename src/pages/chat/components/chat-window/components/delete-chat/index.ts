@@ -1,6 +1,6 @@
 import Button from '../../../../../../components/button';
 import Block, { BlockProps } from '../../../../../../modules/Block';
-import submit from '../../../../../../utils/submit';
+import shapedData from '../../../../../../utils/shapeData';
 import template from './delete-chat.hbs?raw';
 
 class DeleteChat extends Block {
@@ -16,7 +16,7 @@ class DeleteChat extends Block {
         events: {
           click: event => {
             event.preventDefault();
-            submit('#form-delete-chat');
+            shapedData('#form-delete-chat');
           }
         }
       }),

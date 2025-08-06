@@ -1,7 +1,7 @@
-import RouterManagement from '../modules/routing/RouterManagement';
+// import RouterManagement from '../modules/routing/RouterManagement';
 import validate from './validate';
 
-export default function submit(formQuery: string) {
+export default function shapedData(formQuery: string) {
   const formElement = document.querySelector(formQuery) as HTMLFormElement;
   const formData = new FormData(formElement);
   const data = {} as Record<string, FormDataEntryValue>;
@@ -15,9 +15,12 @@ export default function submit(formQuery: string) {
     }
   });
 
-  console.log(data);
+  // console.log(data);
 
   if (!failedValidation) {
-    RouterManagement.go('/messenger');
+    // RouterManagement.go('/messenger');
+    return data;
   }
+
+  return;
 }

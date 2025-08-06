@@ -2,7 +2,7 @@ import template from './change-password.hbs?raw';
 import Block from '../../modules/Block';
 import Input from '../../components/input';
 import Button from '../../components/button';
-import submit from '../../utils/submit';
+import shapedData from '../../utils/shapeData';
 import RouterManagement from '../../modules/routing/RouterManagement';
 
 class ChangePasswordPage extends Block {
@@ -34,7 +34,7 @@ class ChangePasswordPage extends Block {
         events: {
           click: event => {
             event.preventDefault();
-            submit('#form-change-password');
+            shapedData('#form-change-password');
           }
         }
       }),

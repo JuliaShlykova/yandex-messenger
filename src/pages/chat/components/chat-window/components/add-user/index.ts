@@ -1,7 +1,7 @@
 import Button from '../../../../../../components/button';
 import Input from '../../../../../../components/input';
 import Block, { BlockProps } from '../../../../../../modules/Block';
-import submit from '../../../../../../utils/submit';
+import shapedData from '../../../../../../utils/shapeData';
 import template from './add-user.hbs?raw';
 
 class AddUser extends Block {
@@ -24,7 +24,7 @@ class AddUser extends Block {
         events: {
           click: event => {
             event.preventDefault();
-            submit('#form-add-user');
+            shapedData('#form-add-user');
           }
         }
       }),

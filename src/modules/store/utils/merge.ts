@@ -1,6 +1,4 @@
-type Indexed<T = unknown> = {
-  [key: string]: T;
-};
+import { Indexed } from '../store';
 
 function merge(lhs: Indexed, rhs: Indexed): Indexed {
   // Код здесь

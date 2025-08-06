@@ -3,9 +3,10 @@ import template from './profile.hbs?raw';
 import Block from '../../modules/Block';
 import Input from '../../components/input';
 import Button from '../../components/button';
-import submit from '../../utils/submit';
+import shapedData from '../../utils/shapeData';
 import RouterManagement from '../../modules/routing/RouterManagement';
 import InputField from '../../components/input/input-field';
+import { logout } from '../../controllers/auth';
 
 class ProfilePage extends Block {
   constructor() {
@@ -83,7 +84,7 @@ class ProfilePage extends Block {
         events: {
           click: event => {
             event.preventDefault();
-            submit('#form-profile');
+            shapedData('#form-profile');
           }
         }
       }),
@@ -100,7 +101,8 @@ class ProfilePage extends Block {
         class: 'btn-link',
         events: {
           click: () => {
-            RouterManagement.go('/sign-in');
+            logout();
+            // RouterManagement.go('/sign-in');
           }
         }
       }),

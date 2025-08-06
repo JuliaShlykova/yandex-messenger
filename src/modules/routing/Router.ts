@@ -1,6 +1,10 @@
 import Block from '../Block';
 import Route from './Route';
 import { Nullable } from '../types';
+import store from '../store/store';
+import isObjectEmpty from '../../utils/isObjectEmpty';
+import { PROTECTEDROUTES, PUBLICROUTES } from './Constants';
+import { setUser } from '../../controllers/auth';
 
 export interface BlockConstructor {
   new (): Block;
@@ -34,10 +38,12 @@ class Router {
 
   start() {
     window.onpopstate = (event: PopStateEvent) => {
-      this._onRoute((event.currentTarget as Window).location.pathname);
+      const pathname = (event.currentTarget as Window).location.pathname;
+      this.go(pathname);
     };
 
-    this._onRoute(window.location.pathname);
+    const pathname = window.location.pathname;
+    this.go(pathname);
   }
 
   private _onRoute(pathname: string) {
@@ -57,8 +63,28 @@ class Router {
   }
 
   go(pathname: string) {
-    this.history.pushState({}, '', pathname);
-    this._onRoute(pathname);
+    if (PROTECTEDROUTES.includes(pathname) && isObjectEmpty(store.getState())) {
+      setUser().then(() => {
+        this.history.pushState({}, '', pathname);
+        this._onRoute(pathname);
+      }).catch(() => {
+        this.go('/sign-in');
+      });
+    } else if (PUBLICROUTES.includes(pathname)) {
+      if (!isObjectEmpty(store.getState())) {
+        this.go('/messenger');
+      } else {
+        setUser().then(() => {
+          this.go('/messenger');
+        }).catch(() => {
+          this.history.pushState({}, '', pathname);
+          this._onRoute(pathname);
+        });
+      }
+    } else {
+      this.history.pushState({}, '', pathname);
+      this._onRoute(pathname);
+    }
   }
 
   back() {

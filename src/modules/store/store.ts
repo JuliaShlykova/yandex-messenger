@@ -1,25 +1,39 @@
 import EventBus from '../EventBus';
 import set from './utils/set';
 
-// mutable state with unidirectional data flow
-export enum StoreEvents {
-  Updated = 'updated',
-}
+export type Indexed<T = unknown> = {
+  [key: string]: T;
+};
 
-// наследуем Store от EventBus, чтобы его методы были сразу доступны у экземпляра Store
+export const StoreEvents = {
+  Updated: 'updated'
+};
+
 class Store extends EventBus {
   private state: Indexed = {};
 
+  constructor() {
+    super();
+  }
+
   public getState() {
-    return state;
+    return this.state;
   }
 
   public set(path: string, value: unknown) {
-    set(this.state, path, value);
+    try {
+      this.state = set(this.state, path, value) as Indexed;
+    } catch (err) {
+      console.log(err);
+    }
 
     // метод EventBus
     this.emit(StoreEvents.Updated);
   };
+
+  public clear() {
+    this.state = {};
+  }
 }
 
 export default new Store();

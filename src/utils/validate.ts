@@ -8,6 +8,7 @@ export default function validate(name: string, value: string) {
     case 'email':
       return /^[a-zA-Z0-9._-]+@[a-zA-Z]+\.[a-zA-Z]+/.test(value);
     case 'password':
+    case 'confirm-password':
       return /^(?=.*[A-Z])(?=.*\d).{8,40}/.test(value);
     case 'phone':
       return /^\+?\d{10,15}/.test(value);
