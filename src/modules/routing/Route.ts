@@ -1,6 +1,6 @@
 import applyPage from '../../utils/applyPage';
-import Block from '../Block';
-import { BlockConstructor } from './Router';
+import Block, { BlockConstructorType } from '../Block';
+// import { BlockConstructor } from './Router';
 import { Nullable } from '../types';
 
 interface RouteProps {
@@ -10,11 +10,11 @@ interface RouteProps {
 // saves URL and block; shows, hides and creates block
 export default class Route {
   private _pathname: string;
-  private _blockClass: BlockConstructor;
+  private _blockClass: BlockConstructorType;
   private _block: Nullable<Block>;
   private _props: RouteProps;
 
-  constructor(pathname: string, view: BlockConstructor, props: RouteProps) {
+  constructor(pathname: string, view: BlockConstructorType, props: RouteProps) {
     this._pathname = pathname;
     this._blockClass = view;
     this._block = null;
@@ -41,7 +41,7 @@ export default class Route {
 
   render() {
     if (!this._block) {
-      this._block = new this._blockClass();
+      this._block = new this._blockClass({});
       applyPage(this._block, this._props.rootQuery);
       return;
     }

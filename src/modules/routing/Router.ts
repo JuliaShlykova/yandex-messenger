@@ -1,10 +1,11 @@
-import Block from '../Block';
+import Block, { BlockConstructorType } from '../Block';
 import Route from './Route';
 import { Nullable } from '../types';
-import store from '../store/store';
-import isObjectEmpty from '../../utils/isObjectEmpty';
-import { PROTECTEDROUTES, PUBLICROUTES } from './Constants';
 import { setUser } from '../../controllers/auth';
+// import store from '../store/store';
+// import isObjectEmpty from '../../utils/isObjectEmpty';
+// import { PROTECTEDROUTES, PUBLICROUTES } from './Constants';
+// import { setUser } from '../../controllers/auth';
 
 export interface BlockConstructor {
   new (): Block;
@@ -30,7 +31,7 @@ class Router {
     Router.__instance = this;
   }
 
-  use(pathname: string, block: BlockConstructor) {
+  use(pathname: string, block: BlockConstructorType) {
     const route = new Route(pathname, block, { rootQuery: this._rootQuery });
     this.routes.push(route);
     return this;
@@ -63,28 +64,34 @@ class Router {
   }
 
   go(pathname: string) {
-    if (PROTECTEDROUTES.includes(pathname) && isObjectEmpty(store.getState())) {
-      setUser().then(() => {
-        this.history.pushState({}, '', pathname);
-        this._onRoute(pathname);
-      }).catch(() => {
-        this.go('/sign-in');
-      });
-    } else if (PUBLICROUTES.includes(pathname)) {
-      if (!isObjectEmpty(store.getState())) {
-        this.go('/messenger');
-      } else {
-        setUser().then(() => {
-          this.go('/messenger');
-        }).catch(() => {
-          this.history.pushState({}, '', pathname);
-          this._onRoute(pathname);
-        });
-      }
-    } else {
-      this.history.pushState({}, '', pathname);
-      this._onRoute(pathname);
-    }
+    // if (PROTECTEDROUTES.includes(pathname) && isObjectEmpty(store.getState())) {
+    //   setUser().then(() => {
+    //     this.historyAddAndGo(pathname);
+    //   }).catch(() => {
+    //     this.historyAddAndGo('/sign-in');
+    //   });
+    // } else if (PUBLICROUTES.includes(pathname)) {
+    //   if (!isObjectEmpty(store.getState())) {
+    //     this.historyAddAndGo('/messenger');
+    //   } else {
+    //     setUser().then(() => {
+    //       this.historyAddAndGo('/messenger');
+    //     }).catch(() => {
+    //       this.historyAddAndGo(pathname);
+    //     });
+    //   }
+    // } else {
+    //   this.historyAddAndGo(pathname);
+    // }
+
+    setUser().then(() => {
+      this.historyAddAndGo(pathname);
+    });
+  }
+
+  private historyAddAndGo(pathname: string) {
+    this.history.pushState({}, '', pathname);
+    this._onRoute(pathname);
   }
 
   back() {

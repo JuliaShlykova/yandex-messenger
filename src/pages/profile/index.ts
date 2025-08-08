@@ -7,9 +7,13 @@ import shapedData from '../../utils/shapeData';
 import RouterManagement from '../../modules/routing/RouterManagement';
 import InputField from '../../components/input/input-field';
 import { logout } from '../../controllers/auth';
+// import { withUser } from '../../modules/store/connect';
+import store, { StoreEvents } from '../../modules/store/store';
+import { UserResponse } from '../../api/types';
 
 class ProfilePage extends Block {
   constructor() {
+    const user: UserResponse | undefined = store.getState().user as UserResponse | undefined;
     super({
       avatarSrc: '/image-placeholder.svg',
       inputFile: new InputField({
@@ -35,6 +39,7 @@ class ProfilePage extends Block {
         name: 'first_name',
         label: 'Имя',
         id: 'first-name',
+        placeholder: user?.first_name,
         required: true
       }),
       inputLastName: new Input({
@@ -42,6 +47,7 @@ class ProfilePage extends Block {
         name: 'second_name',
         label: 'Фамилия',
         id: 'second-name',
+        placeholder: user?.second_name,
         required: true
       }),
       inputLogin: new Input({
@@ -49,6 +55,7 @@ class ProfilePage extends Block {
         name: 'login',
         label: 'Логин',
         id: 'login',
+        placeholder: user?.login,
         required: true
       }),
       inputEmail: new Input({
@@ -56,6 +63,7 @@ class ProfilePage extends Block {
         name: 'email',
         label: 'Почта',
         id: 'email',
+        placeholder: user?.email,
         required: true
       }),
       inputPhone: new Input({
@@ -63,19 +71,7 @@ class ProfilePage extends Block {
         name: 'email',
         label: 'Телефон',
         id: 'phone',
-        required: true
-      }),
-      inputPassword: new Input({
-        type: 'password',
-        name: 'password',
-        label: 'Пароль',
-        id: 'password',
-        required: true
-      }),
-      inputConfirmPassword: new Input({
-        type: 'password',
-        label: 'Повторите пароль',
-        id: 'confirm-password',
+        placeholder: user?.phone,
         required: true
       }),
       buttonSubmit: new Button({
@@ -116,6 +112,10 @@ class ProfilePage extends Block {
         }
       })
     });
+
+    store.on(StoreEvents.Updated, () => {
+      this.render();
+    });
   }
 
   render() {
@@ -123,4 +123,7 @@ class ProfilePage extends Block {
   }
 }
 
+// const connectedPage = withUser(ProfilePage);
+
+// export { connectedPage as Profile };
 export { ProfilePage as Profile };

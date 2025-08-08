@@ -24,6 +24,10 @@ export interface BlockProps {
   [key: string]: ChildType | unknown
 };
 
+export type BlockConstructorType = {
+  new(propsAndChildren: BlockProps): Block
+}
+
 abstract class Block<T = Record<string, unknown>> {
   static EVENTS = {
     INIT: 'init',
