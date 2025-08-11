@@ -1,6 +1,8 @@
 import Button from '../../../../../../components/button';
+import { deleteChat } from '../../../../../../controllers/chat';
 import Block, { BlockProps } from '../../../../../../modules/Block';
-import shapedData from '../../../../../../utils/shapeData';
+import { withCurrentChat } from '../../../../../../modules/store/connect';
+import store from '../../../../../../modules/store/store';
 import template from './delete-chat.hbs?raw';
 
 class DeleteChat extends Block {
@@ -16,7 +18,13 @@ class DeleteChat extends Block {
         events: {
           click: event => {
             event.preventDefault();
-            shapedData('#form-delete-chat');
+            deleteChat(this.props.currentChat as number)
+                .then(() => {
+                  store.set('currentChat', undefined);
+                })
+                .catch(err => {
+                  console.log(err);
+                });
           }
         }
       }),
@@ -37,4 +45,4 @@ class DeleteChat extends Block {
   }
 }
 
-export default DeleteChat;
+export default withCurrentChat(DeleteChat);

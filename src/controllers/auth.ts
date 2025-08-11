@@ -2,13 +2,14 @@ import AuthAPI from '../api/auth-api';
 import { FormSignIn, FormSignUp, isHTTPError } from '../api/types';
 import RouterManagement from '../modules/routing/RouterManagement';
 import store from '../modules/store/store';
+import { setState } from './setState';
 
 const authAPI = new AuthAPI();
 
 export const signup = async (data: FormSignUp) => {
   try {
     await authAPI.signup(data);
-    await setUser();
+    await setState();
     RouterManagement.go('/messenger');
   } catch (err) {
     if (isHTTPError(err)) {
@@ -22,7 +23,7 @@ export const signup = async (data: FormSignUp) => {
 export const signin = async (data: FormSignIn) => {
   try {
     await authAPI.signin(data);
-    await setUser();
+    await setState();
     RouterManagement.go('/messenger');
   } catch (err) {
     if (isHTTPError(err)) {
@@ -36,10 +37,11 @@ export const signin = async (data: FormSignIn) => {
 export const logout = async () => {
   try {
     await authAPI.logout();
-    store.clear();
-    RouterManagement.go('/sign-in');
   } catch (err) {
     console.log(err);
+  } finally {
+    store.clear();
+    RouterManagement.go('/sign-in');
   }
 };
 
@@ -52,11 +54,11 @@ export const getUser = async () => {
   }
 };
 
-export const setUser = async () => {
+export const isAuth = async () => {
   try {
-    const user = await getUser();
-    store.set('user', user);
-  } catch (err) {
-    console.log(err);
+    await getUser();
+    return true;
+  } catch {
+    return false;
   }
 };

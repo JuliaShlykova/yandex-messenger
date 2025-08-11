@@ -1,7 +1,7 @@
 // import RouterManagement from '../modules/routing/RouterManagement';
 import validate from './validate';
 
-export default function shapedData(formQuery: string) {
+export default function shapedData(formQuery: string, clearForm = false) {
   const formElement = document.querySelector(formQuery) as HTMLFormElement;
   const formData = new FormData(formElement);
   const data = {} as Record<string, FormDataEntryValue>;
@@ -18,7 +18,9 @@ export default function shapedData(formQuery: string) {
   // console.log(data);
 
   if (!failedValidation) {
-    // RouterManagement.go('/messenger');
+    if (clearForm) {
+      formElement.reset();
+    }
     return data;
   }
 

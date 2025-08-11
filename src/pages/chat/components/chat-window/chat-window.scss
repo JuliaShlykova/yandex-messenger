@@ -49,6 +49,12 @@
 
 }
 
+.msg-time {
+  font-size: 0.7rem;
+  text-align: right;
+  color: var(--not-important-color)
+}
+
 .form-message {
   display: flex;
   flex-direction: row;

@@ -1,10 +1,9 @@
 import HTTPTransport from '../modules/http/httpTransport';
-import { BaseAPI } from '../modules/http/base-api';
 import { FormSignIn, FormSignUp, SignUpResponse, UserResponse } from './types';
 
 const authAPIInstance = new HTTPTransport('/auth');
 
-class AuthAPI extends BaseAPI {
+class AuthAPI {
   signup(data: FormSignUp) {
     return authAPIInstance.post<SignUpResponse>('/signup', { data });
   }

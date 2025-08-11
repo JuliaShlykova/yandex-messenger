@@ -18,6 +18,10 @@
   border-radius: 50%;
   background-color: var(--basic-color);
   overflow: hidden;
+
+  img {
+    object-fit: cover;
+  }
 }
 
 label#change-avatar-icon {

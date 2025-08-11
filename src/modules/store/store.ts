@@ -23,7 +23,6 @@ class Store extends EventBus {
   public set(path: string, value: unknown) {
     try {
       this.state = set(this.state, path, value) as Indexed;
-      console.log('updated state: ', this.state);
       this.emit(StoreEvents.Updated);
     } catch (err) {
       console.log(err);

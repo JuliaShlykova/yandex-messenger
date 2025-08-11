@@ -9,10 +9,13 @@ export default function validate(name: string, value: string) {
       return /^[a-zA-Z0-9._-]+@[a-zA-Z]+\.[a-zA-Z]+/.test(value);
     case 'password':
     case 'confirm-password':
+    case 'newPassword':
+    case 'oldPassword':
       return /^(?=.*[A-Z])(?=.*\d).{8,40}/.test(value);
     case 'phone':
       return /^\+?\d{10,15}/.test(value);
     case 'message':
+    case 'title':
       return value.trim().length > 0;
     case 'avatar':
       return true;

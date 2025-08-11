@@ -4,37 +4,55 @@ import Input from '../../components/input';
 import Button from '../../components/button';
 import shapedData from '../../utils/shapeData';
 import RouterManagement from '../../modules/routing/RouterManagement';
+import { updatePassword } from '../../controllers/user';
+import { FormChangePassword } from '../../api/types';
+import FormError from '../../components/form-error';
 
 class ChangePasswordPage extends Block {
   constructor() {
     super({
       inputOldPassword: new Input({
         type: 'password',
-        name: 'old-password',
+        name: 'oldPassword',
         label: 'Старый пароль',
-        id: 'old-password',
+        id: 'oldPassword',
         required: true
       }),
       inputPassword: new Input({
         type: 'password',
-        name: 'password',
+        name: 'newPassword',
         label: 'Новый пароль',
-        id: 'password',
+        id: 'newPassword',
         required: true
       }),
       inputConfirmPassword: new Input({
         type: 'password',
+        name: 'confirm-password',
         label: 'Повторите пароль',
         id: 'confirm-password',
         required: true
       }),
+      formError: new FormError(),
       buttonSubmit: new Button({
         type: 'submit',
         text: 'Сохранить изменения',
         events: {
           click: event => {
             event.preventDefault();
-            shapedData('#form-change-password');
+            const data = shapedData('#form-change-password');
+            if (data) {
+              if (data['newPassword'] !== data['confirm-password']) {
+                console.log('children: ', this.children);
+                this.children.formError.setProps({ error: 'Пароли не совпадают' });
+              } else {
+                updatePassword(data as FormChangePassword).then(() => {
+                  RouterManagement.go('/settings');
+                }).catch(error => {
+                  console.log('error occurred: ', error);
+                  this.children.formError.setProps({ error: error });
+                });
+              }
+            }
           }
         }
       }),

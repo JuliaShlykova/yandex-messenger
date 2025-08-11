@@ -7,20 +7,41 @@ import Button from '../../../../components/button';
 import AddUser from './components/add-user';
 import RemoveUser from './components/remove-user';
 import DeleteChat from './components/delete-chat';
+import store, { Indexed } from '../../../../modules/store/store';
+import { withMessages } from '../../../../modules/store/connect';
+import shapedData from '../../../../utils/shapeData';
+import msgServiceInstance from '../../../../modules/http/messageService';
 
-Handlebars.registerHelper('checkUser', function(author) {
-  return author === 'User';
+Handlebars.registerHelper('checkUser', function(authorId) {
+  return authorId === (store.getState().user as Indexed).id;
+});
+
+Handlebars.registerHelper('transformDateToLocal', function(str: string) {
+  const d = new Date(str);
+  return d.toLocaleString();
 });
 
 class ChatWindow extends Block {
   constructor(props: BlockProps) {
     super({
       ...props,
+      settings: {
+        withInternalId: true
+      },
       buttonSendMessage: new Button({
         imgSrc: '/send-rocket.svg',
         alt: 'send message',
         class: 'btn-send-msg',
-        type: 'submit'
+        type: 'submit',
+        events: {
+          click: event => {
+            event.preventDefault();
+            const data = shapedData('#form-message');
+            if (data && data['message']) {
+              msgServiceInstance.sendPlainMessage(data['message'] as string);
+            }
+          }
+        }
       }),
       buttonOpenMenu: new Button({
         imgSrc: '/three-lines.svg',
@@ -71,4 +92,4 @@ class ChatWindow extends Block {
   }
 }
 
-export default ChatWindow;
+export default withMessages(ChatWindow);

@@ -5,15 +5,16 @@
       {{{searchBar}}}
     </div>
     <div class="chats-list">
-      {{{chatitem}}}
     </div>
     {{{buttonCreateChat}}}
   </div>
   <div class="chat-window-wrapper">
+    {{#unless currentChat}}
     <div>
       <img src="/astronaut.svg" alt="" style="width: 100px">
       <span>Выберите чат</span>
     </div>
+    {{/unless}}
   </div>
   {{{createChat}}}
 </main>

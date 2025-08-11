@@ -1,6 +1,9 @@
 import Button from '../../../../../../components/button';
+import FormError from '../../../../../../components/form-error';
 import Input from '../../../../../../components/input';
+import { removeUser } from '../../../../../../controllers/chat';
 import Block, { BlockProps } from '../../../../../../modules/Block';
+import { withCurrentChat } from '../../../../../../modules/store/connect';
 import shapedData from '../../../../../../utils/shapeData';
 import template from './remove-user.hbs?raw';
 
@@ -18,13 +21,23 @@ class RemoveUser extends Block {
         id: 'login-participant-remove',
         required: true
       }),
+      formError: new FormError(),
       buttonCreate: new Button({
         type: 'submit',
         text: 'Убрать',
         events: {
           click: event => {
             event.preventDefault();
-            shapedData('#form-remove-user');
+            const data = shapedData('#form-remove-user');
+            if (data && data['login']) {
+              removeUser(data['login'] as string, this.props.currentChat as number)
+                  .then(() => {
+                    this.hide();
+                  })
+                  .catch(err => {
+                    this.children.formError.setProps({ error: err });
+                  });
+            }
           }
         }
       }),
@@ -45,4 +58,4 @@ class RemoveUser extends Block {
   }
 }
 
-export default RemoveUser;
+export default withCurrentChat(RemoveUser);

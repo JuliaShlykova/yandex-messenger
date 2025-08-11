@@ -1,7 +1,11 @@
 import Block, { BlockConstructorType } from '../Block';
 import Route from './Route';
 import { Nullable } from '../types';
-import { setUser } from '../../controllers/auth';
+import { setState } from '../../controllers/setState';
+import { isAuth } from '../../controllers/auth';
+import { PROTECTEDROUTES, PUBLICROUTES } from './Constants';
+import store from '../store/store';
+import isObjectEmpty from '../../utils/isObjectEmpty';
 // import store from '../store/store';
 // import isObjectEmpty from '../../utils/isObjectEmpty';
 // import { PROTECTEDROUTES, PUBLICROUTES } from './Constants';
@@ -38,16 +42,33 @@ class Router {
   }
 
   start() {
+    console.log('starting route');
     window.onpopstate = (event: PopStateEvent) => {
       const pathname = (event.currentTarget as Window).location.pathname;
-      this.go(pathname);
+      this._onRoute(pathname);
     };
 
     const pathname = window.location.pathname;
-    this.go(pathname);
+    this._onRoute(pathname);
   }
 
-  private _onRoute(pathname: string) {
+  private async _onRoute(pathname: string) {
+    const isUser = await isAuth();
+
+    if (PROTECTEDROUTES.includes(pathname) && !isUser) {
+      this.go('/sign-in');
+      return;
+    }
+
+    if (PUBLICROUTES.includes(pathname) && isUser) {
+      this.go('/messenger');
+      return;
+    }
+
+    if (isUser && isObjectEmpty(store.getState())) {
+      await setState();
+    }
+
     const route = this.getRoute(pathname);
     if (!route) {
       this.getRoute('/not-found')?.render();
@@ -64,32 +85,6 @@ class Router {
   }
 
   go(pathname: string) {
-    // if (PROTECTEDROUTES.includes(pathname) && isObjectEmpty(store.getState())) {
-    //   setUser().then(() => {
-    //     this.historyAddAndGo(pathname);
-    //   }).catch(() => {
-    //     this.historyAddAndGo('/sign-in');
-    //   });
-    // } else if (PUBLICROUTES.includes(pathname)) {
-    //   if (!isObjectEmpty(store.getState())) {
-    //     this.historyAddAndGo('/messenger');
-    //   } else {
-    //     setUser().then(() => {
-    //       this.historyAddAndGo('/messenger');
-    //     }).catch(() => {
-    //       this.historyAddAndGo(pathname);
-    //     });
-    //   }
-    // } else {
-    //   this.historyAddAndGo(pathname);
-    // }
-
-    setUser().then(() => {
-      this.historyAddAndGo(pathname);
-    });
-  }
-
-  private historyAddAndGo(pathname: string) {
     this.history.pushState({}, '', pathname);
     this._onRoute(pathname);
   }

@@ -7,15 +7,18 @@ import shapedData from '../../utils/shapeData';
 import RouterManagement from '../../modules/routing/RouterManagement';
 import InputField from '../../components/input/input-field';
 import { logout } from '../../controllers/auth';
-// import { withUser } from '../../modules/store/connect';
 import store, { StoreEvents } from '../../modules/store/store';
-import { UserResponse } from '../../api/types';
+import { FormProfile, UserResponse } from '../../api/types';
+import { updateAvatar, updateProfile } from '../../controllers/user';
+import FormError from '../../components/form-error';
+import resourceUrl from '../../utils/resourceURL';
+import msgServiceInstance from '../../modules/http/messageService';
 
 class ProfilePage extends Block {
   constructor() {
-    const user: UserResponse | undefined = store.getState().user as UserResponse | undefined;
+    let user: UserResponse | undefined = store.getState().user as UserResponse | undefined;
     super({
-      avatarSrc: '/image-placeholder.svg',
+      avatarSrc: user?.avatar ? resourceUrl(user.avatar) : '/image-placeholder.svg',
       inputFile: new InputField({
         type: 'file',
         name: 'avatar',
@@ -26,10 +29,12 @@ class ProfilePage extends Block {
             const files = (e.target as HTMLInputElement).files;
             if (files?.length === 1) {
               const file = files[0];
-              const fileURL = URL.createObjectURL(file);
-              console.log(this.props.avatarSrc);
-              this.setProps({ avatarSrc: fileURL });
-              console.log(this.props.avatarSrc);
+              updateAvatar(file).catch(error => {
+                console.log('error occurred: ', error);
+                this.children.formError.setProps({ error: error });
+              });
+              // const fileURL = URL.createObjectURL(file);
+              // this.setProps({ avatarSrc: fileURL });
             }
           }
         }
@@ -39,7 +44,7 @@ class ProfilePage extends Block {
         name: 'first_name',
         label: 'Имя',
         id: 'first-name',
-        placeholder: user?.first_name,
+        value: user?.first_name,
         required: true
       }),
       inputLastName: new Input({
@@ -47,7 +52,7 @@ class ProfilePage extends Block {
         name: 'second_name',
         label: 'Фамилия',
         id: 'second-name',
-        placeholder: user?.second_name,
+        value: user?.second_name,
         required: true
       }),
       inputLogin: new Input({
@@ -55,7 +60,7 @@ class ProfilePage extends Block {
         name: 'login',
         label: 'Логин',
         id: 'login',
-        placeholder: user?.login,
+        value: user?.login,
         required: true
       }),
       inputEmail: new Input({
@@ -63,24 +68,31 @@ class ProfilePage extends Block {
         name: 'email',
         label: 'Почта',
         id: 'email',
-        placeholder: user?.email,
+        value: user?.email,
         required: true
       }),
       inputPhone: new Input({
         type: 'tel',
-        name: 'email',
+        name: 'phone',
         label: 'Телефон',
         id: 'phone',
-        placeholder: user?.phone,
+        value: user?.phone,
         required: true
       }),
+      formError: new FormError(),
       buttonSubmit: new Button({
         type: 'submit',
         text: 'Сохранить изменения',
         events: {
           click: event => {
             event.preventDefault();
-            shapedData('#form-profile');
+            const data = shapedData('#form-profile');
+            if (data) {
+              updateProfile(data as FormProfile).catch(error => {
+                console.log('error occurred: ', error);
+                this.children.formError.setProps({ error: error });
+              });
+            }
           }
         }
       }),
@@ -97,8 +109,8 @@ class ProfilePage extends Block {
         class: 'btn-link',
         events: {
           click: () => {
+            msgServiceInstance.closeSocket();
             logout();
-            // RouterManagement.go('/sign-in');
           }
         }
       }),
@@ -114,7 +126,11 @@ class ProfilePage extends Block {
     });
 
     store.on(StoreEvents.Updated, () => {
-      this.render();
+      const newUser = store.getState().user as UserResponse;
+      if (!(this.props.avatarSrc === resourceUrl(newUser.avatar))) {
+        this.setProps({ avatarSrc: resourceUrl(newUser.avatar) });
+      }
+      user = newUser;
     });
   }
 
@@ -122,8 +138,4 @@ class ProfilePage extends Block {
     return template;
   }
 }
-
-// const connectedPage = withUser(ProfilePage);
-
-// export { connectedPage as Profile };
 export { ProfilePage as Profile };

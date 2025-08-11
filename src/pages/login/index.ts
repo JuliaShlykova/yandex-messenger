@@ -35,7 +35,6 @@ class LoginPage extends Block {
             const data = shapedData('#form-login');
             if (data) {
               signin(data as FormSignIn).catch(error => {
-                console.log('error occurred: ', error);
                 this.children.formError.setProps({ error: error });
               });
             }

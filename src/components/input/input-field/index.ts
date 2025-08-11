@@ -31,6 +31,7 @@ class InputField extends Block<InputFieldType> {
           }
         }
       }
+
     });
   }
 

@@ -22,7 +22,6 @@ export type FormSignUp = {
   login: string,
   email: string,
   password: string,
-  'confirm-pasword': string,
   phone: string
 }
 
@@ -39,4 +38,50 @@ export type UserResponse = {
 
 export type SignUpResponse = {
   id: number
+}
+
+export type FormProfile = Omit<UserResponse, 'id' | 'avatar' | 'display_name'>;
+
+export type FormChangePassword = {
+  oldPassword: string,
+  newPassword: string
+}
+
+export type ChatInfo = {
+  id: number,
+  title: string,
+  avatar: string,
+  unread_count: number,
+  created_by: number,
+  last_message: {
+    user: Omit<UserResponse, 'id' | 'display_name'>,
+    time: string,
+    content: string
+  }
+}
+
+export type ChatsResponse = ChatInfo[];
+
+export type FormChatCreate = {
+  title: string
+}
+
+export type ChatCreateResponse = {
+  id: number
+}
+
+export type ChatDeleteResponse = {
+  userId: number,
+  result: {
+    id: number,
+    title: string,
+    avatar: number,
+    created_by: number
+  }
+}
+
+export type ChatActionWithUsers = {users: number[], chatId: number};
+
+export type ChatTokenResponse = {
+    token: string
 }
