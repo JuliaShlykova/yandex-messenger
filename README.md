@@ -13,6 +13,7 @@
 
 - handlebars;
 - typescript;
+- websocket;
 
 Ссылки:
 
