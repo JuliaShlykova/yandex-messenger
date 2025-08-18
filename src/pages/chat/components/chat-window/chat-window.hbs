@@ -1,19 +1,25 @@
 <div class="chat-window">
   <div class="chat-window-header">
-    {{name}}
+    <span>{{title}}</span>
+    {{{buttonOpenMenu}}}
+    {{{buttonCloseMenu}}}
+    {{{popUpMenu}}}
   </div>
   <div class="messages-wrapper">
     {{#each messages}}
-      <div class="msg {{#if (checkUser this.author)}}user-msg{{else}}other-user-msg{{/if}}">
-        {{this.text}}
-        {{this.timeStamp}}
+      <div class="msg {{#if (checkUser this.user_id)}}user-msg{{else}}other-user-msg{{/if}}">
+        {{this.content}}
+        <div class="msg-time">
+          {{transformDateToLocal this.time}}
+        </div>
       </div>
     {{/each}}
   </div>
-  <form action="" class="form-message">
+  <form action="" id="form-message">
     <input type="text" name="message" placeholder="Message..." class="input-message" />
-    <button type="submit" class="btn-send-msg">
-      <img src="/send_rocket.svg" alt="">
-    </button>
+    {{{buttonSendMessage}}}
   </form>
+{{{addUser}}}
+{{{removeUser}}}
+{{{deleteChat}}}
 </div>

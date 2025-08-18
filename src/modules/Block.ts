@@ -1,13 +1,34 @@
 import EventBus from './EventBus';
-import { PropType, isObject } from './types';
+// import { PropType, isObject } from './types';
 import Handlebars from 'handlebars';
 import makeUUID from '../utils/makeUUID';
+import isObjectEqual from '../utils/isObjectEqual';
+import cloneDeep from '../utils/cloneDeep';
 
-type ChildType = Record<string, Block>;
+// type ChildType = Record<string, Block>;
+interface ChildType {
+  [key: string]: Block
+}
+// export type BlockProps = PropType | ChildType;
 
-export type BlockProps = PropType | ChildType;
+interface SettingsType {
+  withInternalId?: Boolean
+}
 
-abstract class Block {
+interface EventsCallbackTypes {
+  [key: string]: (e: Event) => void
+}
+export interface BlockProps {
+  events?: EventsCallbackTypes,
+  settings?: SettingsType,
+  [key: string]: ChildType | unknown
+};
+
+export type BlockConstructorType = {
+  new(propsAndChildren: BlockProps): Block
+}
+
+abstract class Block<T = Record<string, unknown>> {
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
@@ -19,28 +40,28 @@ abstract class Block {
 
   protected _element: HTMLElement | null = null;
 
-  protected props: PropType;
+  protected props: T & BlockProps;
 
-  protected _oldProps: PropType;
+  protected _oldProps: T & BlockProps;
 
   protected children: ChildType;
 
-  protected eventBus: () => EventBus;
+  protected eventBus: () => EventBus<T & BlockProps>;
 
-  constructor(propsAndChildren: BlockProps = {}) {
-    const eventBus = new EventBus();
+  constructor(propsAndChildren: T & BlockProps = {} as T & BlockProps) {
+    const eventBus = new EventBus<T & BlockProps>();
 
     const { children, props } = this._getChildren(propsAndChildren);
     this.children = children;
 
-    if (isObject(props.settings)&&props.settings.withInternalId) {
+    if (props.settings?.withInternalId) {
       this._id = makeUUID();
       this.props = this._makePropsProxy({ ...props, __id: this._id });
     } else {
       this.props = this._makePropsProxy(props);
     }
 
-    this._oldProps = {};
+    this._oldProps = {} as T & BlockProps;
 
     this.eventBus = () => eventBus;
 
@@ -48,7 +69,7 @@ abstract class Block {
     eventBus.emit(Block.EVENTS.INIT);
   }
 
-  private _registerEvents(eventBus: EventBus): void {
+  private _registerEvents(eventBus: EventBus<T & BlockProps>): void {
     eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
@@ -73,7 +94,7 @@ abstract class Block {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
   }
 
-  private _componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): void {
+  private _componentDidUpdate(oldProps: T & BlockProps, newProps: T & BlockProps): void {
     const response = this.componentDidUpdate(oldProps, newProps);
     if (!response) {
       return;
@@ -81,16 +102,16 @@ abstract class Block {
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
   }
 
-  protected componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
-    return JSON.stringify(oldProps) !== JSON.stringify(newProps);
+  protected componentDidUpdate(oldProps: T & BlockProps, newProps: T & BlockProps): boolean {
+    return !isObjectEqual(oldProps, newProps);
   }
 
-  public setProps = (nextProps: BlockProps) => {
+  public setProps = (nextProps: T & BlockProps) => {
     if (!nextProps) {
       return;
     }
 
-    this._oldProps = { ...this.props };
+    this._oldProps = cloneDeep(this.props) as T & BlockProps;
     Object.assign(this.props, nextProps);
   };
 
@@ -148,7 +169,7 @@ abstract class Block {
     return this.element;
   }
 
-  private _makePropsProxy(props: PropType): PropType {
+  private _makePropsProxy(props: T & BlockProps): T & BlockProps {
     const that = this;
 
     return new Proxy(props, {
@@ -157,9 +178,9 @@ abstract class Block {
         return typeof value === 'function' ? value.bind(target) : value;
       },
       set(target, prop: string, value) {
-        const oldTarget = { ...target };
-        target[prop] = value;
-        that.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
+        const oldTarget = cloneDeep(target);
+        target[prop as keyof T & BlockProps] = value;
+        that.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget as T & BlockProps, target);
         return true;
       },
       deleteProperty() {
@@ -185,7 +206,7 @@ abstract class Block {
   }
 
   private _addEvents(): void {
-    const { events } = this.props as {events: Record<string, () => void>};
+    const { events } = this.props;
     if (events) {
       Object.keys(events).forEach((eventName: string) => {
         this._element?.addEventListener(eventName, events[eventName]);
@@ -194,23 +215,24 @@ abstract class Block {
   }
 
   private _removeEvents() {
-    const { events = {} } = this._oldProps as {events: Record<string, () => void>};
+    const { events = {} } = this._oldProps;
 
     Object.keys(events).forEach(eventName => {
       this._element?.removeEventListener(eventName, events[eventName]);
     });
   }
 
-  private _getChildren(propsAndChildren: BlockProps): {
+  private _getChildren(propsAndChildren: T & BlockProps): {
     children: ChildType,
-    props: PropType
+    props: T & BlockProps
   } {
     const children: ChildType = {};
-    const props: PropType = {};
+    const props: T & BlockProps = {} as T & BlockProps;
 
-    Object.entries(propsAndChildren).forEach(([key, value]) => {
+    (Object.keys(propsAndChildren) as (keyof T & BlockProps)[]).forEach(key => {
+      const value = propsAndChildren[key];
       if (value instanceof Block) {
-        children[key] = value;
+        children[key as keyof ChildType] = value;
       } else {
         props[key] = value;
       }

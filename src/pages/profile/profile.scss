@@ -1,0 +1,41 @@
+.btn-link-in-profile {
+  background: none;
+  border: none;
+  position: absolute;
+  top: 50vh;
+  transform: translate(0, -50%);
+}
+
+#avatar-input-wrapper {
+  width: 100px;
+  height: 100px;
+  position: relative;
+}
+
+#avatar-preview-wrapper {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: var(--basic-color);
+  overflow: hidden;
+
+  img {
+    object-fit: cover;
+  }
+}
+
+label#change-avatar-icon {
+  position: absolute;
+  right: 5%;
+  bottom: 5%;
+  cursor: pointer;
+  
+  img {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+input#avatar {
+  display: none;
+}

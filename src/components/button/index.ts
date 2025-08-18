@@ -1,14 +1,26 @@
 import './button.scss';
 import template from './button.hbs?raw';
-import Block from '../../modules/Block';
-import { PropType } from '../../modules/types';
+import Block, { BlockProps } from '../../modules/Block';
 
-class Button extends Block {
-  constructor(props: PropType) {
+interface ButtonType {
+  class?: string,
+  disabled?: boolean,
+  type?: string,
+  imgSrc?: string,
+  text?: string,
+  alt?: string
+}
+
+class Button extends Block<ButtonType> {
+  constructor(props: ButtonType & BlockProps) {
     super({
       ...props,
       settings: { withInternalId: true }
     });
+  }
+
+  show() {
+    this.getContent().style.display = 'inline-block';
   }
 
   render() {

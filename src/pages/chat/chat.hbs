@@ -1,20 +1,20 @@
 <main class="chat-wrapper">
   <div class="sidebar-chat">
     <div class="sidebar-header">
-      <a class="link-to-profile" href="#">A</a>
+      {{{buttonLinkToProfile}}}
       {{{searchBar}}}
     </div>
     <div class="chats-list">
-      {{{chatitem}}}
     </div>
-    <button class="btn-create-chat">
-      <img src="/pen.svg" alt="">
-    </button>
+    {{{buttonCreateChat}}}
   </div>
   <div class="chat-window-wrapper">
+    {{#unless currentChat}}
     <div>
       <img src="/astronaut.svg" alt="" style="width: 100px">
       <span>Выберите чат</span>
     </div>
+    {{/unless}}
   </div>
+  {{{createChat}}}
 </main>

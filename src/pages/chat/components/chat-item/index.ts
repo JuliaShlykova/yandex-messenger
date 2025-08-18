@@ -1,10 +1,18 @@
+import Handlebars from 'handlebars';
 import './chat-item.scss';
-import Block from '../../../../modules/Block';
+import Block, { BlockProps } from '../../../../modules/Block';
 import template from './chat-item.hbs?raw';
-import { PropType } from '../../../../modules/types';
+
+Handlebars.registerHelper('transformToDay', function(str: string) {
+  if (str) {
+    const d = new Date(str);
+    return new Intl.DateTimeFormat('ru-Ru', { weekday: 'short' }).format(d);
+  }
+  return;
+});
 
 class ChatItem extends Block {
-  constructor(props: PropType) {
+  constructor(props: BlockProps) {
     super({
       ...props,
       settings: {

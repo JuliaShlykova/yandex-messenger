@@ -1,22 +1,31 @@
 <main>
+{{{buttonLinkMessenger}}}
 <div class="centering-wrapper">
   <div class="block">
   <h1>Профиль</h1>
   <div class="form-wrapper">
     <form id="form-profile">
-      {{{inputFile}}}
+      <div id="avatar-input-wrapper">
+        <div id="avatar-preview-wrapper">
+          <img src="{{avatarSrc}}" alt="avatar">
+        </div>
+        <label id="change-avatar-icon" for="avatar">
+          <img src="/change-avatar.svg" alt="change avatar">
+        </label>
+        {{{inputFile}}}
+      </div>
       {{{inputFirstName}}}
       {{{inputLastName}}}
       {{{inputLogin}}}
       {{{inputEmail}}}
       {{{inputPhone}}}
-      {{{inputPassword}}}
-      {{{inputConfirmPassword}}}
+      {{{formError}}}
       {{{buttonSubmit}}}
       {{{buttonPassword}}}
-      <a href="/logout">Выйти</a>
+      {{{buttonLogout}}}
     </form>
   </div>
   </div>
+  {{user.login}}
   </div>
 </main>

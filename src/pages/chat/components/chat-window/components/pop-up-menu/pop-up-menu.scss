@@ -1,0 +1,42 @@
+#chat-menu {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  margin: 10px;
+  background-color: var(--basic-color);
+  box-shadow: 0 0 10px var(--primary-color);
+  border-radius: 20px;
+  overflow: hidden;
+
+  ul {
+    margin: 0;
+  }
+
+  li:last-child button {
+    color: var(--error-color);
+  }
+}
+
+.btn-in-menu {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  margin: 0;
+  gap: 10px;
+  padding: 10px;
+  border: none;
+  background: none;
+  
+  img {
+    width: 20px;
+  }
+
+  span {
+    font-weight: normal;
+    font-size: 0.9rem;
+  }
+
+  &:hover {
+    background-color: hsl(from var(--basic-color) h s calc(l - 5));
+  }
+}

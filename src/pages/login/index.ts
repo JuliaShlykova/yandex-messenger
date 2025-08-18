@@ -2,7 +2,11 @@ import template from './login.hbs?raw';
 import Block from '../../modules/Block';
 import Button from '../../components/button';
 import Input from '../../components/input';
-import submit from '../../utils/submit';
+import shapedData from '../../utils/shapeData';
+import RouterManagement from '../../modules/routing/RouterManagement';
+import { signin } from '../../controllers/auth';
+import { FormSignIn } from '../../api/types';
+import FormError from '../../components/form-error';
 
 class LoginPage extends Block {
   constructor() {
@@ -12,7 +16,6 @@ class LoginPage extends Block {
         name: 'login',
         label: 'Логин',
         id: 'login',
-        settings: { withInternalId: true },
         required: true
       }),
       inputPassword: new Input({
@@ -20,16 +23,30 @@ class LoginPage extends Block {
         name: 'password',
         label: 'Пароль',
         id: 'password',
-        settings: { withInternalId: true },
         required: true
       }),
+      formError: new FormError(),
       button: new Button({
         type: 'submit',
         text: 'Войти',
         events: {
           click: event => {
             event.preventDefault();
-            submit('#form-login');
+            const data = shapedData('#form-login');
+            if (data) {
+              signin(data as FormSignIn).catch(error => {
+                this.children.formError.setProps({ error: error });
+              });
+            }
+          }
+        }
+      }),
+      buttonLink: new Button({
+        text: 'Создать аккаунт',
+        class: 'btn-link',
+        events: {
+          click: () => {
+            RouterManagement.go('/sign-up');
           }
         }
       })

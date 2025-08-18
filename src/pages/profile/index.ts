@@ -1,25 +1,50 @@
+import './profile.scss';
 import template from './profile.hbs?raw';
 import Block from '../../modules/Block';
 import Input from '../../components/input';
 import Button from '../../components/button';
-import submit from '../../utils/submit';
+import shapedData from '../../utils/shapeData';
+import RouterManagement from '../../modules/routing/RouterManagement';
+import InputField from '../../components/input/input-field';
+import { logout } from '../../controllers/auth';
+import store, { StoreEvents } from '../../modules/store/store';
+import { FormProfile, UserResponse } from '../../api/types';
+import { updateAvatar, updateProfile } from '../../controllers/user';
+import FormError from '../../components/form-error';
+import resourceUrl from '../../utils/resourceURL';
+import msgServiceInstance from '../../modules/http/messageService';
 
 class ProfilePage extends Block {
   constructor() {
+    let user: UserResponse | undefined = store.getState().user as UserResponse | undefined;
     super({
-      inputFile: new Input({
+      avatarSrc: user?.avatar ? resourceUrl(user.avatar) : '/image-placeholder.svg',
+      inputFile: new InputField({
         type: 'file',
         name: 'avatar',
-        label: 'Фото профиля',
         id: 'avatar',
-        settings: { withInternalId: true }
+        accept: 'image/*',
+        events: {
+          change: e => {
+            const files = (e.target as HTMLInputElement).files;
+            if (files?.length === 1) {
+              const file = files[0];
+              updateAvatar(file).catch(error => {
+                console.log('error occurred: ', error);
+                this.children.formError.setProps({ error: error });
+              });
+              // const fileURL = URL.createObjectURL(file);
+              // this.setProps({ avatarSrc: fileURL });
+            }
+          }
+        }
       }),
       inputFirstName: new Input({
         type: 'text',
         name: 'first_name',
         label: 'Имя',
         id: 'first-name',
-        settings: { withInternalId: true },
+        value: user?.first_name,
         required: true
       }),
       inputLastName: new Input({
@@ -27,7 +52,7 @@ class ProfilePage extends Block {
         name: 'second_name',
         label: 'Фамилия',
         id: 'second-name',
-        settings: { withInternalId: true },
+        value: user?.second_name,
         required: true
       }),
       inputLogin: new Input({
@@ -35,7 +60,7 @@ class ProfilePage extends Block {
         name: 'login',
         label: 'Логин',
         id: 'login',
-        settings: { withInternalId: true },
+        value: user?.login,
         required: true
       }),
       inputEmail: new Input({
@@ -43,45 +68,69 @@ class ProfilePage extends Block {
         name: 'email',
         label: 'Почта',
         id: 'email',
-        settings: { withInternalId: true },
+        value: user?.email,
         required: true
       }),
       inputPhone: new Input({
         type: 'tel',
-        name: 'email',
+        name: 'phone',
         label: 'Телефон',
         id: 'phone',
-        settings: { withInternalId: true },
+        value: user?.phone,
         required: true
       }),
-      inputPassword: new Input({
-        type: 'password',
-        name: 'password',
-        label: 'Пароль',
-        id: 'password',
-        settings: { withInternalId: true },
-        required: true
-      }),
-      inputConfirmPassword: new Input({
-        type: 'password',
-        label: 'Повторите пароль',
-        id: 'confirm-password',
-        settings: { withInternalId: true },
-        required: true
-      }),
+      formError: new FormError(),
       buttonSubmit: new Button({
         type: 'submit',
         text: 'Сохранить изменения',
         events: {
           click: event => {
             event.preventDefault();
-            submit('#form-profile');
+            const data = shapedData('#form-profile');
+            if (data) {
+              updateProfile(data as FormProfile).catch(error => {
+                console.log('error occurred: ', error);
+                this.children.formError.setProps({ error: error });
+              });
+            }
           }
         }
       }),
       buttonPassword: new Button({
-        text: 'Изменить пароль'
+        text: 'Изменить пароль',
+        events: {
+          click: () => {
+            RouterManagement.go('/change-password');
+          }
+        }
+      }),
+      buttonLogout: new Button({
+        text: 'Выйти',
+        class: 'btn-link',
+        events: {
+          click: () => {
+            msgServiceInstance.closeSocket();
+            logout();
+          }
+        }
+      }),
+      buttonLinkMessenger: new Button({
+        imgSrc: '/arrow-left.svg',
+        class: 'btn-link-in-profile',
+        events: {
+          click: () => {
+            RouterManagement.go('/messenger');
+          }
+        }
       })
+    });
+
+    store.on(StoreEvents.Updated, () => {
+      const newUser = store.getState().user as UserResponse;
+      if (!(this.props.avatarSrc === resourceUrl(newUser.avatar))) {
+        this.setProps({ avatarSrc: resourceUrl(newUser.avatar) });
+      }
+      user = newUser;
     });
   }
 
@@ -89,5 +138,4 @@ class ProfilePage extends Block {
     return template;
   }
 }
-
 export { ProfilePage as Profile };

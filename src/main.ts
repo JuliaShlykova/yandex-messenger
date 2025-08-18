@@ -1,9 +1,7 @@
 import './style.scss';
-import * as Pages from './pages';
-import setFooter from './modules/setFooter';
-import applyPage from './utils/applyPage';
+import RouterManagement from './modules/routing/RouterManagement';
 
-setFooter();
-
-const login = new Pages.Login();
-applyPage<Pages.Login>(login);
+document.addEventListener('DOMContentLoaded', async () => {
+  RouterManagement
+      .start();
+});

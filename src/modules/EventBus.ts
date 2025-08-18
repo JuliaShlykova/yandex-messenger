@@ -1,15 +1,13 @@
-import { EventCallback, PropType } from './types';
+type EventCallback<T extends unknown = unknown> = (...args: T[]) => void;
 
-export default class EventBus {
-  private listeners: Record<string, EventCallback[]>;
+export default class EventBus<P extends unknown = unknown> {
+  private listeners: Record<string, EventCallback<P>[]>;
 
   constructor() {
     this.listeners = {};
   }
 
-  on(event: string, callback: EventCallback): void {
-    // console.log(event, callback);
-
+  on(event: string, callback: EventCallback<P>): void {
     if (!this.listeners[event]) {
       this.listeners[event] = [];
     }
@@ -17,8 +15,7 @@ export default class EventBus {
     this.listeners[event].push(callback);
   }
 
-  off(event: string, callback: EventCallback): void {
-    // console.log(event, callback);
+  off(event: string, callback: EventCallback<P>): void {
     if (!this.listeners[event]) {
       throw new Error(`No event ${event}`);
     }
@@ -28,8 +25,7 @@ export default class EventBus {
     );
   }
 
-  emit(event: string, ...args: PropType[]): void {
-    // console.log(event, args);
+  emit(event: string, ...args: P[]): void {
     if (!this.listeners[event]) {
       throw new Error(`No event: ${event}`);
     }

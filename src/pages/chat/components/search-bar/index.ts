@@ -1,13 +1,17 @@
 import './search-bar.scss';
-import Block from '../../../../modules/Block';
+import Block, { BlockProps } from '../../../../modules/Block';
 import template from './search-bar.hbs?raw';
+import Button from '../../../../components/button';
 
 class SearchBar extends Block {
-  constructor() {
+  constructor(props: BlockProps) {
     super({
-      settings: {
-        withInternalId: true
-      }
+      ...props,
+      buttonSearch: new Button({
+        type: 'submit',
+        imgSrc: '/search.svg',
+        alt: 'search'
+      })
     });
   }
 
