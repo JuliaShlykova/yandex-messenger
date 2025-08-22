@@ -1,21 +1,12 @@
-import Block, { BlockConstructorType } from '../Block';
+import { BlockConstructorType } from '../Block';
 import Route from './Route';
 import { Nullable } from '../types';
 import { setState } from '../../controllers/setState';
 import { isAuth } from '../../controllers/auth';
-import { PROTECTEDROUTES, PUBLICROUTES } from './Constants';
+import { PROTECTEDROUTES, PUBLICROUTES, ROUTES } from './Constants';
 import store from '../store/store';
 import isObjectEmpty from '../../utils/isObjectEmpty';
-// import store from '../store/store';
-// import isObjectEmpty from '../../utils/isObjectEmpty';
-// import { PROTECTEDROUTES, PUBLICROUTES } from './Constants';
-// import { setUser } from '../../controllers/auth';
 
-export interface BlockConstructor {
-  new (): Block;
-}
-
-// Responsible for changing url and evokes Route
 class Router {
   private static __instance: Router;
   private routes: Route[];
@@ -56,12 +47,12 @@ class Router {
     const isUser = await isAuth();
 
     if (PROTECTEDROUTES.includes(pathname) && !isUser) {
-      this.go('/sign-in');
+      this.go(ROUTES.SignIn);
       return;
     }
 
     if (PUBLICROUTES.includes(pathname) && isUser) {
-      this.go('/messenger');
+      this.go(ROUTES.Messenger);
       return;
     }
 
@@ -71,7 +62,7 @@ class Router {
 
     const route = this.getRoute(pathname);
     if (!route) {
-      this.getRoute('/not-found')?.render();
+      this.getRoute(ROUTES.Error404)?.render();
       return;
     }
 

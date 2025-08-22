@@ -13,8 +13,9 @@ import { ChatsResponse } from '../../api/types';
 import isObjectEqual from '../../utils/isObjectEqual';
 import { PlainObject } from '../../modules/types';
 import resourceUrl from '../../utils/resourceURL';
-import msgServiceInstance from '../../modules/http/messageService';
+import msgServiceInstance from '../../modules/network/messageService';
 import { getChatToken } from '../../controllers/chat';
+import { ROUTES } from '../../modules/routing/Constants';
 
 
 class ChatPage extends Block {
@@ -36,7 +37,7 @@ class ChatPage extends Block {
         text: userAvatar ? '' : 'Я',
         events: {
           click: () => {
-            RouterManagement.go('/settings');
+            RouterManagement.go(ROUTES.Settings);
           }
         }
       }),

@@ -1,23 +1,23 @@
-import HTTPTransport from '../modules/http/httpTransport';
+import HTTPTransport from '../modules/network/httpTransport';
 import { FormChangePassword, FormProfile, UserResponse } from './types';
 
-const userAPIInstance = new HTTPTransport('/user');
-
 class UserAPI {
+  private readonly userAPIInstance = new HTTPTransport('/user');
+
   updateProfile(data: FormProfile) {
-    return userAPIInstance.put<UserResponse>('/profile', { data });
+    return this.userAPIInstance.put<UserResponse>('/profile', { data });
   }
 
   updateAvatar(data: FormData) {
-    return userAPIInstance.put<UserResponse>('/profile/avatar', { data });
+    return this.userAPIInstance.put<UserResponse>('/profile/avatar', { data });
   }
 
   changePassword(data: FormChangePassword) {
-    return userAPIInstance.put<void>('/password', { data });
+    return this.userAPIInstance.put<void>('/password', { data });
   }
 
   searchUserByLogin(data: {login: string}) {
-    return userAPIInstance.post<UserResponse[]>('/search', { data });
+    return this.userAPIInstance.post<UserResponse[]>('/search', { data });
   }
 }
 

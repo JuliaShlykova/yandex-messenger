@@ -12,7 +12,9 @@ import { FormProfile, UserResponse } from '../../api/types';
 import { updateAvatar, updateProfile } from '../../controllers/user';
 import FormError from '../../components/form-error';
 import resourceUrl from '../../utils/resourceURL';
-import msgServiceInstance from '../../modules/http/messageService';
+import msgServiceInstance from '../../modules/network/messageService';
+import makeDisplayName from '../../utils/makeDisplayName';
+import { ROUTES } from '../../modules/routing/Constants';
 
 class ProfilePage extends Block {
   constructor() {
@@ -33,8 +35,6 @@ class ProfilePage extends Block {
                 console.log('error occurred: ', error);
                 this.children.formError.setProps({ error: error });
               });
-              // const fileURL = URL.createObjectURL(file);
-              // this.setProps({ avatarSrc: fileURL });
             }
           }
         }
@@ -53,6 +53,14 @@ class ProfilePage extends Block {
         label: 'Фамилия',
         id: 'second-name',
         value: user?.second_name,
+        required: true
+      }),
+      inputDisplayName: new Input({
+        type: 'text',
+        name: 'display_name',
+        label: 'Отображаемое имя',
+        id: 'display-name',
+        value: user?.display_name ? user.display_name : makeDisplayName(user?.first_name, user?.second_name),
         required: true
       }),
       inputLogin: new Input({
@@ -100,7 +108,7 @@ class ProfilePage extends Block {
         text: 'Изменить пароль',
         events: {
           click: () => {
-            RouterManagement.go('/change-password');
+            RouterManagement.go(ROUTES.ChangePassword);
           }
         }
       }),
@@ -119,7 +127,7 @@ class ProfilePage extends Block {
         class: 'btn-link-in-profile',
         events: {
           click: () => {
-            RouterManagement.go('/messenger');
+            RouterManagement.go(ROUTES.Messenger);
           }
         }
       })

@@ -10,7 +10,7 @@ import DeleteChat from './components/delete-chat';
 import store, { Indexed } from '../../../../modules/store/store';
 import { withMessages } from '../../../../modules/store/connect';
 import shapedData from '../../../../utils/shapeData';
-import msgServiceInstance from '../../../../modules/http/messageService';
+import msgServiceInstance from '../../../../modules/network/messageService';
 
 Handlebars.registerHelper('checkUser', function(authorId) {
   return authorId === (store.getState().user as Indexed).id;

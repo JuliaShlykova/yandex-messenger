@@ -7,6 +7,7 @@ import RouterManagement from '../../modules/routing/RouterManagement';
 import { updatePassword } from '../../controllers/user';
 import { FormChangePassword } from '../../api/types';
 import FormError from '../../components/form-error';
+import { ROUTES } from '../../modules/routing/Constants';
 
 class ChangePasswordPage extends Block {
   constructor() {
@@ -46,7 +47,7 @@ class ChangePasswordPage extends Block {
                 this.children.formError.setProps({ error: 'Пароли не совпадают' });
               } else {
                 updatePassword(data as FormChangePassword).then(() => {
-                  RouterManagement.go('/settings');
+                  RouterManagement.go(ROUTES.Settings);
                 }).catch(error => {
                   console.log('error occurred: ', error);
                   this.children.formError.setProps({ error: error });
@@ -61,7 +62,7 @@ class ChangePasswordPage extends Block {
         class: 'btn-link-in-profile',
         events: {
           click: () => {
-            RouterManagement.go('/settings');
+            RouterManagement.go(ROUTES.Settings);
           }
         }
       })

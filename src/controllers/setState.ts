@@ -4,9 +4,8 @@ import { getChats } from './chat';
 
 export const setState = async () => {
   try {
-    const user = await getUser();
+    const [user, chats] = await Promise.all([getUser(), getChats]);
     store.set('user', user);
-    const chats = await getChats();
     store.set('chats', chats);
   } catch (err) {
     console.log(err);

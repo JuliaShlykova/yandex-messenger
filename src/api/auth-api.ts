@@ -1,20 +1,20 @@
-import HTTPTransport from '../modules/http/httpTransport';
+import HTTPTransport from '../modules/network/httpTransport';
 import { FormSignIn, FormSignUp, SignUpResponse, UserResponse } from './types';
 
-const authAPIInstance = new HTTPTransport('/auth');
-
 class AuthAPI {
+  private readonly authAPIInstance = new HTTPTransport('/auth');
+
   signup(data: FormSignUp) {
-    return authAPIInstance.post<SignUpResponse>('/signup', { data });
+    return this.authAPIInstance.post<SignUpResponse>('/signup', { data });
   }
   signin(data: FormSignIn) {
-    return authAPIInstance.post<void>('/signin', { data });
+    return this.authAPIInstance.post<void>('/signin', { data });
   }
   logout() {
-    return authAPIInstance.post<void>('/logout');
+    return this.authAPIInstance.post<void>('/logout');
   }
   getUser() {
-    return authAPIInstance.get<UserResponse>('/user');
+    return this.authAPIInstance.get<UserResponse>('/user');
   }
 }
 

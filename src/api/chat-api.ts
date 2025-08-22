@@ -1,4 +1,4 @@
-import HTTPTransport from '../modules/http/httpTransport';
+import HTTPTransport from '../modules/network/httpTransport';
 import {
   ChatActionWithUsers,
   ChatCreateResponse,
@@ -8,31 +8,31 @@ import {
   FormChatCreate
 } from './types';
 
-const chatAPIInstance = new HTTPTransport('/chats');
-
 class ChatAPI {
+  private readonly chatAPIInstance = new HTTPTransport('/chats');
+
   getChats() {
-    return chatAPIInstance.get<ChatsResponse>('');
+    return this.chatAPIInstance.get<ChatsResponse>('');
   }
 
   createChat(data: FormChatCreate) {
-    return chatAPIInstance.post<ChatCreateResponse>('', { data });
+    return this.chatAPIInstance.post<ChatCreateResponse>('', { data });
   }
 
   deleteChat(data: {chatId: number}) {
-    return chatAPIInstance.delete<ChatDeleteResponse>('', { data });
+    return this.chatAPIInstance.delete<ChatDeleteResponse>('', { data });
   }
 
   addUserToChat(data: ChatActionWithUsers) {
-    return chatAPIInstance.put<void>('/users', { data });
+    return this.chatAPIInstance.put<void>('/users', { data });
   }
 
   removeUserFromChat(data: ChatActionWithUsers) {
-    return chatAPIInstance.delete<void>('/users', { data });
+    return this.chatAPIInstance.delete<void>('/users', { data });
   }
 
   getChatTokenById(id: number) {
-    return chatAPIInstance.post<ChatTokenResponse>('/token/' + id);
+    return this.chatAPIInstance.post<ChatTokenResponse>('/token/' + id);
   }
 }
 
