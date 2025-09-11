@@ -12,7 +12,7 @@ function connect(mapStateToProps: (state: Indexed) => Indexed) {
         super({ ...props, ...state });
 
         // подписываемся на событие
-        store.on(StoreEvents.Updated, () => {
+        store.on(StoreEvents.UPDATED, () => {
         // вызываем обновление компонента, передав данные из хранилища
           const newState = mapStateToProps(store.getState());
           if (!isObjectEqual(state, newState)) {

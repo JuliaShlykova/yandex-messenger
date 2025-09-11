@@ -58,7 +58,6 @@ class MessageService {
       });
 
       this.socket.addEventListener('message', event => {
-        console.log('Получены данные', event.data);
         const messages = JSON.parse(event.data);
         if (Array.isArray(messages)) {
           store.set('messages', messages.reverse());

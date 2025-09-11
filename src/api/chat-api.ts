@@ -5,6 +5,7 @@ import {
   ChatDeleteResponse,
   ChatsResponse,
   ChatTokenResponse,
+  ChatUsersResponse,
   FormChatCreate
 } from './types';
 
@@ -21,6 +22,10 @@ class ChatAPI {
 
   deleteChat(data: {chatId: number}) {
     return this.chatAPIInstance.delete<ChatDeleteResponse>('', { data });
+  }
+
+  getUsers(id: number) {
+    return this.chatAPIInstance.get<ChatUsersResponse>(`/${id}/users`);
   }
 
   addUserToChat(data: ChatActionWithUsers) {

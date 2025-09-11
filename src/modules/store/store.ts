@@ -1,4 +1,6 @@
+import { ChatsResponse, UserResponse } from '../../api/types';
 import EventBus from '../EventBus';
+import { MessageType } from '../network/messageService';
 import set from './utils/set';
 
 export type Indexed<T = unknown> = {
@@ -6,31 +8,47 @@ export type Indexed<T = unknown> = {
 };
 
 export const StoreEvents = {
-  Updated: 'updated'
+  UPDATED: 'updated'
 };
 
+export type BaseState = {
+  chats?: ChatsResponse,
+  currentChat?: number,
+  messages?: MessageType[],
+  user?: UserResponse
+}
+
 class Store extends EventBus {
-  private state: Indexed = {};
+  static STORE_NAME = 'appStore';
+  private _state: BaseState = {};
 
   constructor() {
     super();
+
+    // const savedState = sessionStorage.getItem(Store.STORE_NAME);
+    // this._state = savedState ? (JSON.parse(savedState) ?? {}) : {};
+
+    // this.on(StoreEvents.UPDATED, () => {
+    //   sessionStorage.setItem(Store.STORE_NAME, JSON.stringify(this._state));
+    // });
   }
 
   public getState() {
-    return this.state;
+    return this._state;
   }
 
   public set(path: string, value: unknown) {
     try {
-      this.state = set(this.state, path, value) as Indexed;
-      this.emit(StoreEvents.Updated);
+      this._state = set(this._state, path, value) as Indexed;
+      this.emit(StoreEvents.UPDATED);
     } catch (err) {
       console.log(err);
     }
   };
 
   public clear() {
-    this.state = {};
+    this._state = {};
+    // this.emit(StoreEvents.UPDATED);
   }
 }
 

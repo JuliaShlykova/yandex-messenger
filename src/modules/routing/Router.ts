@@ -33,7 +33,7 @@ class Router {
   }
 
   start() {
-    console.log('starting route');
+    console.log('starting router');
     window.onpopstate = (event: PopStateEvent) => {
       const pathname = (event.currentTarget as Window).location.pathname;
       this._onRoute(pathname);

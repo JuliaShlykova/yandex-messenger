@@ -11,6 +11,17 @@ Handlebars.registerHelper('transformToDay', function(str: string) {
   return;
 });
 
+Handlebars.registerHelper('transformLastMsg', function(str: string) {
+  if (str) {
+    if (str.length <= 35) {
+      return str;
+    } else {
+      return str.substring(0, 35) + '...';
+    }
+  }
+  return;
+});
+
 class ChatItem extends Block {
   constructor(props: BlockProps) {
     super({

@@ -133,7 +133,7 @@ class ProfilePage extends Block {
       })
     });
 
-    store.on(StoreEvents.Updated, () => {
+    store.on(StoreEvents.UPDATED, () => {
       const newUser = store.getState().user as UserResponse;
       if (!(this.props.avatarSrc === resourceUrl(newUser.avatar))) {
         this.setProps({ avatarSrc: resourceUrl(newUser.avatar) });

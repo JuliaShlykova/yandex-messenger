@@ -21,6 +21,7 @@ import { ROUTES } from '../../modules/routing/Constants';
 class ChatPage extends Block {
   constructor() {
     const chats = store.getState().chats;
+    console.log('constructing chat page, chats: ', chats);
     const currentChat = store.getState().currentChat as number;
     const userId = (store.getState().user as PlainObject).id;
     const userAvatar = (store.getState().user as PlainObject).avatar as string;
@@ -53,22 +54,25 @@ class ChatPage extends Block {
       createChat: new CreateChat({})
     });
 
-    store.on(StoreEvents.Updated, () => {
+    store.on(StoreEvents.UPDATED, () => {
       const newChats = store.getState().chats;
+      // console.log('old chats: ', this.props.chats, 'new chats: ', newChats);
       const newCurrentChat = store.getState().currentChat;
-      const chatsChanged = !isObjectEqual(this.props.chats as PlainObject, newChats as PlainObject);
-      const currentChatChanged = !(this.props.currentChat === newCurrentChat);
-      if (!chatsChanged && !currentChatChanged) return;
-      if (chatsChanged && currentChatChanged) {
-        this.setProps({ currentChat: newCurrentChat, chats: newChats });
-      } else if (chatsChanged) {
-        this.setProps({ chats: newChats });
-      } else {
-        console.log('current chat updated: ', newCurrentChat);
-        this.setProps({ currentChat: newCurrentChat });
+      if (newChats) {
+        const chatsChanged = !isObjectEqual(this.props.chats as PlainObject, newChats);
+        const currentChatChanged = !(this.props.currentChat === newCurrentChat);
+        if (!chatsChanged && !currentChatChanged) return;
+        if (chatsChanged && currentChatChanged) {
+          this.setProps({ currentChat: newCurrentChat, chats: newChats });
+        } else if (chatsChanged) {
+          this.setProps({ chats: newChats });
+        } else {
+          this.setProps({ currentChat: newCurrentChat });
+        }
+        console.log('chat page did update');
+        this.renderChatItems();
+        this.renderCurrentChat();
       }
-      this.renderChatItems();
-      this.renderCurrentChat();
     });
   }
 
@@ -80,7 +84,7 @@ class ChatPage extends Block {
   public async renderCurrentChat() {
     const { currentChat, chats, userId } = this.props;
     if (currentChat && chats) {
-      const currentChatInfo = (this.props.chats as ChatsResponse).find(chat=>chat.id===this.props.currentChat);
+      const currentChatInfo = (chats as ChatsResponse).find(chat=>chat.id===this.props.currentChat);
       const token = await getChatToken(currentChat as number);
       if (token) {
         await msgServiceInstance.init({ chatId: (currentChat as number), userId: (userId as number), token });
@@ -103,6 +107,7 @@ class ChatPage extends Block {
           click: (event: Event) => {
             const target = event.currentTarget as HTMLElement;
             if (target) {
+              store.set('messages', undefined);
               store.set('currentChat', chatInfo.id);
             }
           }
