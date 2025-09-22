@@ -41,7 +41,7 @@ class HTTPTransport {
     return this.request<T>(url, { ...options, method: METHODS.DELETE }, options?.timeout);
   };
 
-  request = <T>(url: string, options: RequestOptions, timeout: number = 5000): Promise<T> => {
+  request = <T>(url: string, options: RequestOptions, timeout: number = 10000): Promise<T> => {
     const { headers = {}, method, data, signal, withCredentials = true, responseType = 'json' } = options;
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();

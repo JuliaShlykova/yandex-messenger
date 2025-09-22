@@ -11,10 +11,9 @@ import CreateChat from './components/create-chat';
 import store, { StoreEvents } from '../../modules/store/store';
 import { ChatsResponse } from '../../api/types';
 import isObjectEqual from '../../utils/isObjectEqual';
-import { PlainObject } from '../../modules/types';
 import resourceUrl from '../../utils/resourceURL';
 import msgServiceInstance from '../../modules/network/messageService';
-import { getChatToken } from '../../controllers/chat';
+import { getChatToken, getChatUsers } from '../../controllers/chat';
 import { ROUTES } from '../../modules/routing/Constants';
 
 
@@ -22,9 +21,9 @@ class ChatPage extends Block {
   constructor() {
     const chats = store.getState().chats;
     console.log('constructing chat page, chats: ', chats);
-    const currentChat = store.getState().currentChat as number;
-    const userId = (store.getState().user as PlainObject).id;
-    const userAvatar = (store.getState().user as PlainObject).avatar as string;
+    const currentChat = store.getState().currentChat;
+    const userId = store.getState().user?.id;
+    const userAvatar = store.getState().user?.avatar;
     console.log('current: ', currentChat);
 
     super({
@@ -56,10 +55,9 @@ class ChatPage extends Block {
 
     store.on(StoreEvents.UPDATED, () => {
       const newChats = store.getState().chats;
-      // console.log('old chats: ', this.props.chats, 'new chats: ', newChats);
       const newCurrentChat = store.getState().currentChat;
       if (newChats) {
-        const chatsChanged = !isObjectEqual(this.props.chats as PlainObject, newChats);
+        const chatsChanged = !isObjectEqual(this.props.chats as unknown[], newChats);
         const currentChatChanged = !(this.props.currentChat === newCurrentChat);
         if (!chatsChanged && !currentChatChanged) return;
         if (chatsChanged && currentChatChanged) {
@@ -89,13 +87,14 @@ class ChatPage extends Block {
       if (token) {
         await msgServiceInstance.init({ chatId: (currentChat as number), userId: (userId as number), token });
       }
-
+      const participants = await getChatUsers(currentChat as number);
+      store.set('participants', participants);
       const chat = new ChatWindow({ ...currentChatInfo });
       applyPage(chat, '.chat-window-wrapper');
     }
   }
 
-  public renderChatItems() {
+  public async renderChatItems() {
     const chatsListWrapper = this.getContent().querySelector('.chats-list');
     if (!chatsListWrapper) return;
     chatsListWrapper.innerHTML = '';

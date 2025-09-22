@@ -32,3 +32,8 @@ export const withCurrentChat = connect(state => ({
 export const withMessages = connect(state => ({
   messages: state.messages
 }));
+
+export const withCurrentChatAndParticipants = connect(state => ({
+  currentChat: state.currentChat,
+  participants: state.participants
+}));

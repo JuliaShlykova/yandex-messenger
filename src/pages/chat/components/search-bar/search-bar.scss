@@ -10,7 +10,8 @@
 
   button {
     background-color: transparent;
-    border: none
+    border: none;
+    flex-shrink: 0;
   }
 
   input {

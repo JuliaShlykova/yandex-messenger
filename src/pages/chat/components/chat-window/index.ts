@@ -11,6 +11,8 @@ import store, { StoreEvents } from '../../../../modules/store/store';
 import shapedData from '../../../../utils/shapeData';
 import msgServiceInstance from '../../../../modules/network/messageService';
 import isObjectEqual from '../../../../utils/isObjectEqual';
+import makeDisplayName from '../../../../utils/makeDisplayName';
+import resourceUrl from '../../../../utils/resourceURL';
 
 Handlebars.registerHelper('checkUser', function(authorId) {
   const currentUser = store.getState().user;
@@ -25,13 +27,25 @@ Handlebars.registerHelper('transformDateToLocal', function(str: string) {
   return d.toLocaleString();
 });
 
+Handlebars.registerHelper('displayName', function(user) {
+  return user.display_name ? user.display_name : makeDisplayName(user.first_name, user.second_name);
+});
+
+Handlebars.registerHelper('setAvatar', function(user) {
+  return user.avatar ? resourceUrl(user.avatar) : '/avatar.svg';
+});
+
 class ChatWindow extends Block {
   constructor(props: BlockProps) {
     const messages = store.getState().messages;
+    // const participants = store.getState().participants;
+    // const currentChat = store.getState().currentChat;
 
     super({
       ...props,
       messages: messages,
+      // participants: participants,
+      // currentChat: currentChat,
       settings: {
         withInternalId: true
       },
@@ -83,8 +97,14 @@ class ChatWindow extends Block {
           this.children.deleteChat.show();
         }
       }),
-      addUser: new AddUser({}),
-      removeUser: new RemoveUser({}),
+      addUser: new AddUser({
+        // participants,
+        // currentChat
+      }),
+      removeUser: new RemoveUser({
+        // participants,
+        // currentChat
+      }),
       deleteChat: new DeleteChat({})
     });
 
@@ -104,6 +124,21 @@ class ChatWindow extends Block {
           }
           store.set('chats', chats);
           console.log('state: ', store.getState());
+          const anchor = document.getElementById('anchor-last');
+          anchor?.scrollIntoView();
+        }
+      }
+      const newParticipants = store.getState().participants;
+      if (newParticipants) {
+        if (
+          !this.props.participants
+        || !isObjectEqual(this.props.participants as unknown[], newParticipants)
+        ) {
+          console.log('new participants!');
+          this.setProps({ participants: newParticipants });
+          this.children.removeUser.hide();
+          this.children.addUser.hide();
+          this.children.buttonOpenMenu.show();
           const anchor = document.getElementById('anchor-last');
           anchor?.scrollIntoView();
         }

@@ -1,4 +1,4 @@
-import { ChatsResponse, UserResponse } from '../../api/types';
+import { ChatsResponse, ChatUsersResponse, UserResponse } from '../../api/types';
 import EventBus from '../EventBus';
 import { MessageType } from '../network/messageService';
 import set from './utils/set';
@@ -11,11 +11,12 @@ export const StoreEvents = {
   UPDATED: 'updated'
 };
 
-export type BaseState = {
+type BaseState = {
   chats?: ChatsResponse,
   currentChat?: number,
-  messages?: MessageType[],
-  user?: UserResponse
+  messages?: MessageType[], // messages for current chat
+  user?: UserResponse,
+  participants?: ChatUsersResponse // participants for current chat
 }
 
 class Store extends EventBus {
