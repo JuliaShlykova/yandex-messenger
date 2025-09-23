@@ -3,6 +3,7 @@
 // socket.addEventListener('error', onError); // ошибка
 // socket.addEventListener('close', onClose); // сокет закрылся
 
+import makeDisplayName from '../../utils/makeDisplayName';
 import store from '../store/store';
 import { Nullable } from '../types';
 import { HOSTWEBSOCKET } from './Constants';
@@ -25,7 +26,9 @@ export type MessageType = {
   user_id?: number,
   content: string,
   type: string,
-  time?: string
+  time?: string,
+  user_display_name?: string,
+  user_avatar?: string
 }
 
 class MessageService {
@@ -59,8 +62,15 @@ class MessageService {
 
       this.socket.addEventListener('message', event => {
         const messages = JSON.parse(event.data);
+        const participants = store.getState().participants;
         if (Array.isArray(messages)) {
-          store.set('messages', messages.reverse());
+          store.set('messages', messages.reverse().map(msg => {
+            const user = participants?.find(p => p.id === msg.user_id);
+            if (user) {
+              msg.user = user;
+            }
+            return msg;
+          }));
         } else if (messages.type === 'message') {
           const oldMessages = store.getState().messages as MessageType[];
           store.set('messages', [...oldMessages, messages]);

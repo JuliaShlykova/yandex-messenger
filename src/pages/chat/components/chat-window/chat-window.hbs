@@ -7,6 +7,10 @@
   </div>
   <div class="messages-wrapper">
     {{#each messages}}
+    {{#unless (checkUser this.user_id)}}
+    <img src="{{setAvatar this.user}}" alt="avatar">
+    <span>{{displayName this.user}}</span>
+    {{/unless}}
       <div class="msg {{#if (checkUser this.user_id)}}user-msg{{else}}other-user-msg{{/if}}">
         {{this.content}}
         <div class="msg-time">

@@ -28,7 +28,7 @@ Handlebars.registerHelper('transformDateToLocal', function(str: string) {
 });
 
 Handlebars.registerHelper('displayName', function(user) {
-  return user.display_name ? user.display_name : makeDisplayName(user.first_name, user.second_name);
+  return user.display_name ?? makeDisplayName(user.first_name, user.second_name);
 });
 
 Handlebars.registerHelper('setAvatar', function(user) {

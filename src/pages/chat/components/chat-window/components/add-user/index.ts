@@ -18,7 +18,7 @@ class AddUser extends Block {
       inputUserName: new Input({
         type: 'text',
         name: 'login',
-        label: 'Введите логин участника',
+        label: 'Введите логин нового участника',
         id: 'login-participant',
         required: true
       }),

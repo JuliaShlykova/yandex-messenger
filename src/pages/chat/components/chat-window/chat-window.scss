@@ -69,3 +69,15 @@
   background-color: transparent;
   border: none;
 }
+
+.participant-avatar {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  border-radius: 50%;
+  
+  img {
+    object-fit: cover;
+  }
+}
