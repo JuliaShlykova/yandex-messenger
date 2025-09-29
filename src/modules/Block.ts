@@ -1,15 +1,12 @@
 import EventBus from './EventBus';
-// import { PropType, isObject } from './types';
 import Handlebars from 'handlebars';
 import makeUUID from '../utils/makeUUID';
 import isObjectEqual from '../utils/isObjectEqual';
 import cloneDeep from '../utils/cloneDeep';
 
-// type ChildType = Record<string, Block>;
 interface ChildType {
   [key: string]: Block
 }
-// export type BlockProps = PropType | ChildType;
 
 interface SettingsType {
   withInternalId?: Boolean

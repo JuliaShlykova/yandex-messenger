@@ -11,20 +11,34 @@
     "start": "npm run build && npm run preview",
     "lint:ts": "eslint .",
     "lint:ts-fix": "eslint . --fix",
-    "lint:scss": "stylelint src/**/*.scss"
+    "lint:scss": "stylelint src/**/*.scss",
+    "lint:scss-fix": "stylelint src/**/*.scss --fix",
+    "test": "mocha",
+    "prepare": "husky"
   },
   "engines": {
     "node": ">=22.16.0"
   },
   "devDependencies": {
+    "@types/chai": "^5.2.2",
+    "@types/mocha": "^10.0.10",
+    "@types/sinon": "^17.0.4",
+    "@types/sinon-chai": "^4.0.0",
     "@typescript-eslint/eslint-plugin": "^8.35.0",
     "@typescript-eslint/parser": "^8.35.0",
+    "chai": "^6.0.1",
     "eslint": "^9.29.0",
     "eslint-config-google": "^0.14.0",
+    "husky": "^9.1.7",
+    "jsdom": "^27.0.0",
+    "mocha": "^11.7.2",
     "sass": "^1.89.2",
+    "sinon": "^19.0.4",
+    "sinon-chai": "^4.0.1",
     "stylelint": "^16.21.0",
     "stylelint-config-standard": "^38.0.0",
     "stylelint-scss": "^6.12.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "vite": "^6.3.5"
   },

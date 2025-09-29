@@ -7,6 +7,7 @@ import RouterManagement from '../../modules/routing/RouterManagement';
 import { signup } from '../../controllers/auth';
 import { FormSignUp } from '../../api/types';
 import FormError from '../../components/form-error';
+import { ROUTES } from '../../modules/routing/Constants';
 
 class SignupPage extends Block {
   constructor() {
@@ -87,7 +88,7 @@ class SignupPage extends Block {
         class: 'btn-link',
         events: {
           click: () => {
-            RouterManagement.go('/sign-in');
+            RouterManagement.go(ROUTES.SignIn);
           }
         }
       })

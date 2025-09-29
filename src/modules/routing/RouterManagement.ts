@@ -1,16 +1,16 @@
 import Router from './Router';
 import * as Pages from '../../pages';
+import { ROUTES } from './Constants';
 
 const RouterManagement = new Router();
 
 RouterManagement
-    .use('/', Pages.Login)
-    .use('/sign-in', Pages.Login)
-    .use('/sign-up', Pages.Signup)
-    .use('/settings', Pages.Profile)
-    .use('/messenger', Pages.Chat)
-    .use('/not-found', Pages.NotFound)
-    .use('/server-error', Pages.ServerError)
-    .use('/change-password', Pages.ChangePassword);
+    .use(ROUTES.SignIn, Pages.Login)
+    .use(ROUTES.SignUp, Pages.Signup)
+    .use(ROUTES.Settings, Pages.Profile)
+    .use(ROUTES.Messenger, Pages.Chat)
+    .use(ROUTES.Error404, Pages.NotFound)
+    .use(ROUTES.Error500, Pages.ServerError)
+    .use(ROUTES.ChangePassword, Pages.ChangePassword);
 
 export default RouterManagement;

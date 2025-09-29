@@ -39,6 +39,15 @@ export const deleteChat = async (chatId: number) => {
   }
 };
 
+export const getChatUsers = async (chatId: number) => {
+  try {
+    const users = await chatAPI.getUsers(chatId);
+    return users;
+  } catch (err) {
+    throw err;
+  }
+};
+
 export const addUser = async (userLogin: string, chatId: number) => {
   try {
     const userId = await findUserByLogin(userLogin);
@@ -52,10 +61,9 @@ export const addUser = async (userLogin: string, chatId: number) => {
   }
 };
 
-export const removeUser = async (userLogin: string, chatId: number) => {
+export const removeUsers = async (users: number[], chatId: number) => {
   try {
-    const userId = await findUserByLogin(userLogin);
-    await chatAPI.removeUserFromChat({ users: [userId], chatId });
+    await chatAPI.removeUserFromChat({ users, chatId });
   } catch (err) {
     if (isHTTPError(err)) {
       throw new Error(err.reason);

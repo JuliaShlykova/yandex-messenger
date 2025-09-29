@@ -7,13 +7,31 @@
   </div>
   <div class="messages-wrapper">
     {{#each messages}}
-      <div class="msg {{#if (checkUser this.user_id)}}user-msg{{else}}other-user-msg{{/if}}">
+    {{#if (checkUser this.user_id)}}
+      <div class="msg user-msg">
         {{this.content}}
         <div class="msg-time">
           {{transformDateToLocal this.time}}
         </div>
       </div>
+    {{else}}
+      {{#if (newParticipant ../messages @index)}}
+      <div class="particpant-info">
+        <div class="participant-avatar">
+          <img src="{{setAvatar this.user}}" alt="avatar">
+        </div>
+        <span class="contrast-text">{{displayName this.user}}</span>
+      </div>
+      {{/if}}
+      <div class="msg other-user-msg">
+        {{this.content}}
+        <div class="msg-time">
+          {{transformDateToLocal this.time}}
+        </div>
+      </div>
+    {{/if}}
     {{/each}}
+    <div id="anchor-last"></div>
   </div>
   <form action="" id="form-message">
     <input type="text" name="message" placeholder="Message..." class="input-message" />

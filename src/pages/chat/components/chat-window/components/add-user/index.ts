@@ -2,8 +2,9 @@ import Button from '../../../../../../components/button';
 import FormError from '../../../../../../components/form-error';
 import Input from '../../../../../../components/input';
 import { addUser } from '../../../../../../controllers/chat';
+import { setParticipants } from '../../../../../../controllers/setState';
 import Block, { BlockProps } from '../../../../../../modules/Block';
-import { withCurrentChat } from '../../../../../../modules/store/connect';
+import { withCurrentChatAndParticipants } from '../../../../../../modules/store/connect';
 import shapedData from '../../../../../../utils/shapeData';
 import template from './add-user.hbs?raw';
 
@@ -17,7 +18,7 @@ class AddUser extends Block {
       inputUserName: new Input({
         type: 'text',
         name: 'login',
-        label: 'Введите логин участника',
+        label: 'Введите логин нового участника',
         id: 'login-participant',
         required: true
       }),
@@ -32,7 +33,7 @@ class AddUser extends Block {
             if (data && data['login']) {
               addUser(data['login'] as string, this.props.currentChat as number)
                   .then(() => {
-                    this.hide();
+                    setParticipants();
                   })
                   .catch(err => {
                     this.children.formError.setProps({ error: err });
@@ -58,4 +59,5 @@ class AddUser extends Block {
   }
 }
 
-export default withCurrentChat(AddUser);
+export default withCurrentChatAndParticipants(AddUser);
+// export default AddUser;

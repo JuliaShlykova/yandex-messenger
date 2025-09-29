@@ -12,7 +12,7 @@ function connect(mapStateToProps: (state: Indexed) => Indexed) {
         super({ ...props, ...state });
 
         // подписываемся на событие
-        store.on(StoreEvents.Updated, () => {
+        store.on(StoreEvents.UPDATED, () => {
         // вызываем обновление компонента, передав данные из хранилища
           const newState = mapStateToProps(store.getState());
           if (!isObjectEqual(state, newState)) {
@@ -31,4 +31,9 @@ export const withCurrentChat = connect(state => ({
 
 export const withMessages = connect(state => ({
   messages: state.messages
+}));
+
+export const withCurrentChatAndParticipants = connect(state => ({
+  currentChat: state.currentChat,
+  participants: state.participants
 }));

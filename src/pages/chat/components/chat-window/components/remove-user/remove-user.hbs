@@ -3,7 +3,25 @@
   <div class="block">
   <div class="form-wrapper">
     <form id="form-remove-user">
-      {{{ inputUserName }}}
+      <fieldset>
+        <legend>Выберите участника:</legend>
+      {{#each participants}}
+      <div>
+        <input
+          type="checkbox"
+          id="{{this.id}}"
+          name="users"
+          value={{this.id}}
+          />
+        <label for="{{this.id}}">
+          <div class="participant-avatar">
+            <img src="{{setAvatar this}}" alt="">
+          </div>
+          <span>{{displayName this}}{{#if (checkUser this.id)}}(Вы){{/if}}</span>
+        </label>
+      </div>
+      {{/each}}
+      </fieldset>
       {{{ formError }}}
       <div class="btns-wrapper-horizontal">
         {{{ buttonCancel }}}

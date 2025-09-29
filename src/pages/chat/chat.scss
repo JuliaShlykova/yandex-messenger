@@ -5,20 +5,23 @@
 .sidebar-chat {
   background-color: var(--contrast-color);
   border-right: 1px solid var(--primary-color);
-  width: 360px;
+  width: clamp(270px, 30vw, 360px);
   flex-shrink: 0;
   height: 100%;
   position: relative;
 
   .sidebar-header {
+    --gap: min(15px, 2vw);
+
     display: flex;
-    padding: 6px 15px;
-    gap: 15px;
+    padding: 6px var(--gap);
+    gap: var(--gap);
 
     .link-to-profile {
       display: inline-block;
       width: 40px;
       height: 40px;
+      flex-shrink: 0;
       background-color: var(--primary-color);
       border: none;
       border-radius: 50%;

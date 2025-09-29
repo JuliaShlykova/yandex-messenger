@@ -1,4 +1,4 @@
-.search-wrapper  {
+#form-search  {
   display: flex;
   flex-direction: row;
   gap: 5px;
@@ -10,7 +10,8 @@
 
   button {
     background-color: transparent;
-    border: none
+    border: none;
+    flex-shrink: 0;
   }
 
   input {

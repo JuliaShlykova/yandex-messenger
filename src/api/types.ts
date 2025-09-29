@@ -85,3 +85,7 @@ export type ChatActionWithUsers = {users: number[], chatId: number};
 export type ChatTokenResponse = {
     token: string
 }
+
+export type ChatUser = Omit<UserResponse, 'email' | 'phone'>;
+
+export type ChatUsersResponse = ChatUser[];

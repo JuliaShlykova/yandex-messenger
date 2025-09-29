@@ -11,18 +11,19 @@ import CreateChat from './components/create-chat';
 import store, { StoreEvents } from '../../modules/store/store';
 import { ChatsResponse } from '../../api/types';
 import isObjectEqual from '../../utils/isObjectEqual';
-import { PlainObject } from '../../modules/types';
 import resourceUrl from '../../utils/resourceURL';
-import msgServiceInstance from '../../modules/http/messageService';
-import { getChatToken } from '../../controllers/chat';
+import msgServiceInstance from '../../modules/network/messageService';
+import { getChatToken, getChatUsers } from '../../controllers/chat';
+import { ROUTES } from '../../modules/routing/Constants';
 
 
 class ChatPage extends Block {
   constructor() {
     const chats = store.getState().chats;
-    const currentChat = store.getState().currentChat as number;
-    const userId = (store.getState().user as PlainObject).id;
-    const userAvatar = (store.getState().user as PlainObject).avatar as string;
+    console.log('constructing chat page, chats: ', chats);
+    const currentChat = store.getState().currentChat;
+    const userId = store.getState().user?.id;
+    const userAvatar = store.getState().user?.avatar;
     console.log('current: ', currentChat);
 
     super({
@@ -36,7 +37,7 @@ class ChatPage extends Block {
         text: userAvatar ? '' : 'Я',
         events: {
           click: () => {
-            RouterManagement.go('/settings');
+            RouterManagement.go(ROUTES.Settings);
           }
         }
       }),
@@ -52,22 +53,24 @@ class ChatPage extends Block {
       createChat: new CreateChat({})
     });
 
-    store.on(StoreEvents.Updated, () => {
+    store.on(StoreEvents.UPDATED, () => {
       const newChats = store.getState().chats;
       const newCurrentChat = store.getState().currentChat;
-      const chatsChanged = !isObjectEqual(this.props.chats as PlainObject, newChats as PlainObject);
-      const currentChatChanged = !(this.props.currentChat === newCurrentChat);
-      if (!chatsChanged && !currentChatChanged) return;
-      if (chatsChanged && currentChatChanged) {
-        this.setProps({ currentChat: newCurrentChat, chats: newChats });
-      } else if (chatsChanged) {
-        this.setProps({ chats: newChats });
-      } else {
-        console.log('current chat updated: ', newCurrentChat);
-        this.setProps({ currentChat: newCurrentChat });
+      if (newChats) {
+        const chatsChanged = !isObjectEqual(this.props.chats as unknown[], newChats);
+        const currentChatChanged = !(this.props.currentChat === newCurrentChat);
+        if (!chatsChanged && !currentChatChanged) return;
+        if (chatsChanged && currentChatChanged) {
+          this.setProps({ currentChat: newCurrentChat, chats: newChats });
+        } else if (chatsChanged) {
+          this.setProps({ chats: newChats });
+        } else {
+          this.setProps({ currentChat: newCurrentChat });
+        }
+        console.log('chat page did update');
+        this.renderChatItems();
+        this.renderCurrentChat();
       }
-      this.renderChatItems();
-      this.renderCurrentChat();
     });
   }
 
@@ -79,18 +82,19 @@ class ChatPage extends Block {
   public async renderCurrentChat() {
     const { currentChat, chats, userId } = this.props;
     if (currentChat && chats) {
-      const currentChatInfo = (this.props.chats as ChatsResponse).find(chat=>chat.id===this.props.currentChat);
+      const currentChatInfo = (chats as ChatsResponse).find(chat=>chat.id===this.props.currentChat);
       const token = await getChatToken(currentChat as number);
       if (token) {
         await msgServiceInstance.init({ chatId: (currentChat as number), userId: (userId as number), token });
       }
-
+      const participants = await getChatUsers(currentChat as number);
+      store.set('participants', participants);
       const chat = new ChatWindow({ ...currentChatInfo });
       applyPage(chat, '.chat-window-wrapper');
     }
   }
 
-  public renderChatItems() {
+  public async renderChatItems() {
     const chatsListWrapper = this.getContent().querySelector('.chats-list');
     if (!chatsListWrapper) return;
     chatsListWrapper.innerHTML = '';
@@ -102,6 +106,7 @@ class ChatPage extends Block {
           click: (event: Event) => {
             const target = event.currentTarget as HTMLElement;
             if (target) {
+              store.set('messages', undefined);
               store.set('currentChat', chatInfo.id);
             }
           }

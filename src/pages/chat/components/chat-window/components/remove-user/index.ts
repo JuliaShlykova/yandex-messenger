@@ -1,9 +1,11 @@
 import Button from '../../../../../../components/button';
 import FormError from '../../../../../../components/form-error';
 import Input from '../../../../../../components/input';
-import { removeUser } from '../../../../../../controllers/chat';
+import { removeUsers } from '../../../../../../controllers/chat';
+import { setParticipants } from '../../../../../../controllers/setState';
 import Block, { BlockProps } from '../../../../../../modules/Block';
-import { withCurrentChat } from '../../../../../../modules/store/connect';
+import { withCurrentChatAndParticipants } from '../../../../../../modules/store/connect';
+import isObjectEmpty from '../../../../../../utils/isObjectEmpty';
 import shapedData from '../../../../../../utils/shapeData';
 import template from './remove-user.hbs?raw';
 
@@ -29,10 +31,18 @@ class RemoveUser extends Block {
           click: event => {
             event.preventDefault();
             const data = shapedData('#form-remove-user');
-            if (data && data['login']) {
-              removeUser(data['login'] as string, this.props.currentChat as number)
+            if (isObjectEmpty(data)||!data) {
+              this.children.formError.setProps({ error: 'Выберите хотя бы одного участника' });
+            } else {
+              let users;
+              if (Array.isArray(data['users'])) {
+                users = data['users'].map(id => Number(id));
+              } else {
+                users = [Number(data['users'])];
+              }
+              removeUsers(users, this.props.currentChat as number)
                   .then(() => {
-                    this.hide();
+                    setParticipants();
                   })
                   .catch(err => {
                     this.children.formError.setProps({ error: err });
@@ -58,4 +68,5 @@ class RemoveUser extends Block {
   }
 }
 
-export default withCurrentChat(RemoveUser);
+export default withCurrentChatAndParticipants(RemoveUser);
+// export default RemoveUser;
