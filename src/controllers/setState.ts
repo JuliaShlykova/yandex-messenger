@@ -25,3 +25,12 @@ export const setParticipants = async () => {
     console.log(err);
   }
 };
+
+export const setChats = async () => {
+  try {
+    const chats = await getChats();
+    store.set('chats', chats);
+  } catch (err) {
+    console.log(err);
+  }
+};

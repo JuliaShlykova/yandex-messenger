@@ -35,17 +35,21 @@ Handlebars.registerHelper('setAvatar', function(user) {
   return user.avatar ? resourceUrl(user.avatar) : '/avatar.svg';
 });
 
+Handlebars.registerHelper('newParticipant', function(array, index) {
+  if (index > 0) {
+    return array[index].user_id !== array[index - 1].user_id;
+  } else {
+    return true;
+  }
+});
+
 class ChatWindow extends Block {
   constructor(props: BlockProps) {
     const messages = store.getState().messages;
-    // const participants = store.getState().participants;
-    // const currentChat = store.getState().currentChat;
 
     super({
       ...props,
       messages: messages,
-      // participants: participants,
-      // currentChat: currentChat,
       settings: {
         withInternalId: true
       },
@@ -97,14 +101,8 @@ class ChatWindow extends Block {
           this.children.deleteChat.show();
         }
       }),
-      addUser: new AddUser({
-        // participants,
-        // currentChat
-      }),
-      removeUser: new RemoveUser({
-        // participants,
-        // currentChat
-      }),
+      addUser: new AddUser({}),
+      removeUser: new RemoveUser({}),
       deleteChat: new DeleteChat({})
     });
 
@@ -116,14 +114,6 @@ class ChatWindow extends Block {
           || !isObjectEqual(this.props.messages as unknown[], newMessages)
         ) {
           this.setProps({ messages: newMessages });
-          const chats = store.getState().chats;
-          console.log('messages: ', newMessages);
-          if (chats) {
-            // const curChatIndex = chats.findIndex(chat => chat.id === store.getState().currentChat);
-            // chats[curChatIndex]['last_message'] = newMessages[newMessages.length-1];
-          }
-          store.set('chats', chats);
-          console.log('state: ', store.getState());
           const anchor = document.getElementById('anchor-last');
           anchor?.scrollIntoView();
         }

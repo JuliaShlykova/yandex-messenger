@@ -31,7 +31,6 @@ class RemoveUser extends Block {
           click: event => {
             event.preventDefault();
             const data = shapedData('#form-remove-user');
-            console.log('data', data);
             if (isObjectEmpty(data)||!data) {
               this.children.formError.setProps({ error: 'Выберите хотя бы одного участника' });
             } else {
@@ -49,15 +48,6 @@ class RemoveUser extends Block {
                     this.children.formError.setProps({ error: err });
                   });
             }
-            // if (data && data['login']) {
-            //   removeUser(data['login'] as string, this.props.currentChat as number)
-            //       .then(() => {
-            //         this.hide();
-            //       })
-            //       .catch(err => {
-            //         this.children.formError.setProps({ error: err });
-            //       });
-            // }
           }
         }
       }),

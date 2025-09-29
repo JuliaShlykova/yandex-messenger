@@ -25,13 +25,6 @@ class Store extends EventBus {
 
   constructor() {
     super();
-
-    // const savedState = sessionStorage.getItem(Store.STORE_NAME);
-    // this._state = savedState ? (JSON.parse(savedState) ?? {}) : {};
-
-    // this.on(StoreEvents.UPDATED, () => {
-    //   sessionStorage.setItem(Store.STORE_NAME, JSON.stringify(this._state));
-    // });
   }
 
   public getState() {
@@ -49,7 +42,6 @@ class Store extends EventBus {
 
   public clear() {
     this._state = {};
-    // this.emit(StoreEvents.UPDATED);
   }
 }
 

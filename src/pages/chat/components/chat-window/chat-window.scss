@@ -76,6 +76,7 @@
   height: 40px;
   overflow: hidden;
   border-radius: 50%;
+  outline: 1px solid var(--contrast-color);
   
   img {
     object-fit: cover;
