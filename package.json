@@ -12,6 +12,7 @@
     "lint:ts": "eslint .",
     "lint:ts-fix": "eslint . --fix",
     "lint:scss": "stylelint src/**/*.scss",
+    "lint:scss-fix": "stylelint src/**/*.scss --fix",
     "test": "mocha"
   },
   "engines": {
@@ -27,6 +28,7 @@
     "chai": "^6.0.1",
     "eslint": "^9.29.0",
     "eslint-config-google": "^0.14.0",
+    "husky": "^9.1.7",
     "jsdom": "^27.0.0",
     "mocha": "^11.7.2",
     "sass": "^1.89.2",
@@ -41,5 +43,10 @@
   },
   "dependencies": {
     "handlebars": "^4.7.8"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm-run-all test lint:all"
+    }
   }
 }
