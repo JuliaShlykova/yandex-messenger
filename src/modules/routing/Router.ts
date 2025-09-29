@@ -2,7 +2,7 @@ import { BlockConstructorType } from '../Block';
 import Route from './Route';
 import { Nullable } from '../types';
 import { setState } from '../../controllers/setState';
-import { isAuth } from '../../controllers/auth';
+import { isAuth } from '../../controllers/checkUser';
 import { PROTECTEDROUTES, PUBLICROUTES, ROUTES } from './Constants';
 import store from '../store/store';
 import isObjectEmpty from '../../utils/isObjectEmpty';
@@ -16,10 +16,8 @@ class Router {
 
   constructor() {
     if (Router.__instance) {
-      console.log('router old');
       return Router.__instance;
     }
-    console.log('router new');
     this.routes = [];
     this.history = window.history;
     this._currentRoute = null;
@@ -43,23 +41,7 @@ class Router {
     this._onRoute(pathname);
   }
 
-  private async _onRoute(pathname: string) {
-    const isUser = await isAuth();
-
-    if (PROTECTEDROUTES.includes(pathname) && !isUser) {
-      this.go(ROUTES.SignIn);
-      return;
-    }
-
-    if (PUBLICROUTES.includes(pathname) && isUser) {
-      this.go(ROUTES.Messenger);
-      return;
-    }
-
-    if (isUser && isObjectEmpty(store.getState())) {
-      await setState();
-    }
-
+  private showRoute(pathname:string) {
     const route = this.getRoute(pathname);
     if (!route) {
       this.getRoute(ROUTES.Error404)?.render();
@@ -73,6 +55,30 @@ class Router {
     this._currentRoute = route;
 
     route.render();
+  }
+
+  private async _onRoute(pathname: string) {
+    if (!PROTECTEDROUTES.includes(pathname) && !PUBLICROUTES.includes(pathname)) {
+      this.showRoute(pathname);
+    } else {
+      const isUser = await isAuth();
+
+      if (PROTECTEDROUTES.includes(pathname) && !isUser) {
+        this.go(ROUTES.SignIn);
+        return;
+      }
+
+      if (PUBLICROUTES.includes(pathname) && isUser) {
+        this.go(ROUTES.Messenger);
+        return;
+      }
+
+      if (isUser && isObjectEmpty(store.getState())) {
+        await setState();
+      }
+
+      this.showRoute(pathname);
+    }
   }
 
   go(pathname: string) {

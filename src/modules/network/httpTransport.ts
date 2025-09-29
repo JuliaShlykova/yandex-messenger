@@ -47,7 +47,7 @@ class HTTPTransport {
       const xhr = new XMLHttpRequest();
 
       if (method === METHODS.GET && data) {
-        const urlWithQuery = this._baseUrl + url + queryStringify(data as Record<string, unknown>);
+        const urlWithQuery = this._baseUrl + url + '?' + queryStringify(data as Record<string, unknown>);
         xhr.open(method, urlWithQuery);
       } else {
         xhr.open(method, this._baseUrl + url);

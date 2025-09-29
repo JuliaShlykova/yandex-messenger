@@ -1,5 +1,5 @@
 import store from '../modules/store/store';
-import { getUser } from './auth';
+import { getUser } from './checkUser';
 import { getChats, getChatUsers } from './chat';
 
 export const setState = async () => {

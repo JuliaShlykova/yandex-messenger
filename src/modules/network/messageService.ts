@@ -1,9 +1,3 @@
-// socket.addEventListener('open', onOpen); // соединение установлено
-// socket.addEventListener('message', onMessage); // пришло новое сообщение
-// socket.addEventListener('error', onError); // ошибка
-// socket.addEventListener('close', onClose); // сокет закрылся
-
-import makeDisplayName from '../../utils/makeDisplayName';
 import store from '../store/store';
 import { Nullable } from '../types';
 import { HOSTWEBSOCKET } from './Constants';

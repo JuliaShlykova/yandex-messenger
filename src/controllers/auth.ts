@@ -46,20 +46,20 @@ export const logout = async () => {
   }
 };
 
-export const getUser = async () => {
-  try {
-    const user = await authAPI.getUser();
-    return user;
-  } catch (err) {
-    throw err;
-  }
-};
+// export const getUser = async () => {
+//   try {
+//     const user = await authAPI.getUser();
+//     return user;
+//   } catch (err) {
+//     throw err;
+//   }
+// };
 
-export const isAuth = async () => {
-  try {
-    await getUser();
-    return true;
-  } catch {
-    return false;
-  }
-};
+// export const isAuth = async () => {
+//   try {
+//     await getUser();
+//     return true;
+//   } catch {
+//     return false;
+//   }
+// };
